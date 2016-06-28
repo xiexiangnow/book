@@ -1,0 +1,225 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/kindeditor/kindeditor.js"></script>
+<script type="text/javascript" src="__JS__/jquery.tools.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/my97/wdatepicker.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script type="text/javascript" src="__JS__/attachment.js"></script>
+<script>
+	$(function(){
+		$('ul.J_tabs').tabs('div.J_panes > div');
+		
+		KindEditor.ready(function(K) {
+			var editor1 = K.create('textarea[name="content"]', {
+				width: '900px',
+				height: '400px',
+				allowFileManager : false,
+				allowFlashUpload:true,
+				uploadJson : '{:U('Public/editupload')}'							
+			});
+		});		
+		  
+		  $('#changeCat').click(function(){
+		    art.dialog.open("{:U('Navigate/cats',array('module'=>$module,''))}",{title: '请选择内容栏目',id:'cats',width:350,height: 420,lock: true});	
+		  });
+		  
+		  
+	})
+			
+	function changeCat(id,name){
+		$('#category_id').val(id);
+		$('#changeCat strong').html(name);
+		art.dialog({id:'cats'}).close();
+	}
+</script>
+</head>
+<body>
+
+
+	<div class="subnav">
+		<div class="content_menu ib_a blue line_x">
+			<a href="{:U('index')}">
+				<em>内容管理</em>
+			</a>
+			<span>|</span>
+			<a href="javascript:;" class="on">
+				<em>编辑内容</em>
+			</a>			
+		</div>
+	</div>
+
+			<form action="<notempty name='info'>{:U('edit')}<else/>{:U('add')}</notempty>" method="post">
+            <input type="hidden" name="id" value="{$info['id']}">	
+            <input type="hidden" name="category_id" value="{$catid}">
+            <input type="hidden" name="type" value="{$type}">
+            <input type="hidden" name="module" value="{$module}">
+	<div class="pad_lr_10">
+		<div class="col_tab">
+			<ul class="J_tabs tab_but cu_li">
+				<li class="current">基本信息</li>
+				<li>扩展信息</li>
+			</ul>
+			<div class="J_panes">
+				<div class="content_list pad_10">
+					<table width="100%" cellspacing="0" class="table_form">
+					    
+						<tr>
+							<th width="120">所属栏目 :</th>
+							<td>
+							   <a href="javascript:;" id="changeCat" title="修改栏目"><strong>{$title}</strong></a>							    
+							</td>
+						</tr>
+						
+						<!--<if condition="$cat eq 2">-->
+						<!--<tr>-->
+							<!--<th width="120">所属课程 :</th>-->
+							<!--<td>-->
+							   <!--<select name="sid">-->
+							     <!--<option>=请选择=</option>-->
+							     <!--<volist name="course" id="vo">-->
+							        <!--<option value="{$vo['id']}" <if condition="$info['sid'] eq $vo['id']">selected="selected"</if>>{$vo['title']}</option>-->
+							     <!--</volist>-->
+							   <!--</select>							    -->
+							<!--</td>-->
+						<!--</tr>						-->
+						<!--</if>-->
+						
+						<tr>
+							<th><font color="red">*</font> 标题 :</th>
+							<td>
+								<input type="text" name="title" class="input-text" size="100" value="{$info['title']}">
+							</td>
+						</tr>
+						<tr>
+							<th><font color="red">*</font> 附件 :</th>
+							<td>					
+							<?php
+							   $filelist = string2array($info['sourceurls']);
+							?>							   														   
+							    <div class="picList" id="files">
+							    <volist name="filelist" id="vo">
+							    <li id="multifile{$vo['id']}">
+							        <input type="text" class="input-text" style="width:160px;" value="{$vo['url']}" name="files_url[]"> 
+							        <input type="text" onblur="if(this.value.replace(' ','') == '') this.value = this.defaultValue;" onfocus="if(this.value == this.defaultValue) this.value = ''" class="input-text" style="width:310px;" value="{$vo['alt']}" name="files_alt[]"> 
+							        <a href="javascript:remove_div('multifile{$vo['id']}')">移除</a> 
+							    </li>							
+							    </volist>    
+							    </div>							
+						        <div class="bk10"></div>
+						        <if condition="$cat eq 0">						   
+ 							    <input type="button" id="picupload" onclick="javascript:flashupload(0,'图册上传',20,'jpg|jpeg|png|bmp|gif',2,'files',change_multifile_update)" class="btn" value="上传图片">
+ 							    <elseif condition="$cat eq 1"/>
+ 							    <input type="button" id="picupload" onclick="javascript:flashupload(1,'文件上传',5,'rar|zip',10,'files',change_multifile_update)" class="btn" value="上传文件">
+ 							    <else/>
+ 							    <input type="button" id="picupload" onclick="javascript:flashupload(2,'附件上传',1,'flv',300,'files',change_multifile_update)" class="btn" value="上传视频">
+ 							    </if>							   	
+							</td>
+						</tr>	
+						<tr>
+							<th width="120">封面图片 :</th>
+							<td>
+							    <div style="margin-bottom:5px;">
+							       <input type="hidden" name="coverimg" id="thumb" value="{$info['coverimg']}">
+							       <notempty name="info['coverimg']">
+							       <img height="113" src="{$info['coverimg']}" id="thumb_preview" style="cursor:hand">
+							       <else/>
+							       <img height="113" src="/Public/Admin/img/upload-pic.png" id="thumb_preview" style="cursor:hand">
+							       </notempty>
+							       <a href="javascript:;" onclick="removeImg('thumb');">移除</a>
+							    </div>                				             	 			
+								<input type="button" onclick="javascript:flashupload(0,'图片上传',1,'jpg|jpeg|png|bmp|gif',2,'thumb',thumb_images)" class="btn" value="上传封面图片">
+								在详情页中显示<label><input type="radio" name="coverimg_show" value="1" <eq name="info['coverimg_show']" value="1">checked="checked"</eq>>是</label>&nbsp;&nbsp;
+								<label><input type="radio" name="coverimg_show" value="0" <eq name="info['coverimg_show']" value="0">checked="checked"</eq>>否</label>								
+				                <span style="color:red;"></span>
+                			</td>
+						</tr>						
+						<tr>
+							<th>内容 :</th>
+							<td>
+								<textarea id="content" name="content">{$info['content']}</textarea>
+							</td>
+						</tr>	
+						<tr>
+							<th>关键词 :</th>
+							<td>
+								<input type="text" name="keywords" class="input-text" size="115" value="{$info['keywords']}">
+								<span class="gray ml10">用于内容搜索</span>
+							</td>
+						</tr>																	
+						<tr>
+							<th>摘要 :</th>
+							<td>
+								<textarea name='description' style="width: 700px; height: 65px;" title="留空则自动截取内容前140个字符">{$info['description']}</textarea>
+							</td>
+						</tr>																	
+						<tr>
+							<th>是否推荐 :</th>
+							<td>
+							    <label>
+									<input type="radio" name="top" class="radio_style" value="1"  <eq name="info['top']" value="1">checked="checked"</eq>>是
+								</label>
+								&nbsp;&nbsp;
+								<label>
+									<input type="radio" name="top" class="radio_style" value="0"  <eq name="info['top']" value="0">checked="checked"</eq>>
+									否
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th>排序 :</th>
+							<td>
+								<input type="text" name="sort" class="input-text" size="25" value="{$info['sort']}">
+								<span class="gray ml10">必须是整数，越大越靠前</span>
+							</td>
+						</tr>													
+						<tr>
+							<th>发布 :</th>
+							<td>
+								<label>
+									<input type="radio" name="state" class="radio_style" value="1" <eq name="info['state']" value="1">checked="checked"</eq>>是
+								</label>
+								&nbsp;&nbsp;
+								<label>
+									<input type="radio" name="state" class="radio_style" value="2" <eq name="info['state']" value="2">checked="checked"</eq>>否
+								</label>
+							</td>
+						</tr>						
+					</table>
+				</div>
+				<div class="content_list pad_10 hidden">
+					<table width="100%" cellspacing="0" class="table_form">						
+						<tr>
+							<th>作者 :</th>
+							<td>
+								<input type="text" name="writer" class="input-text" size="60" value="{$info['writer']}">
+							</td>
+						</tr>
+						<tr>
+							<th>阅读数 :</th>
+							<td>
+								<input type="text" name="view" class="input-text" size="60" value="{$info['view']}">
+							</td>
+						</tr>
+						<tr style="display:none">
+							<th>截止时间 :</th>
+							<td>
+								<input type="text" name="endtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="input-text Wdate" size="25" value="<notempty name="info['endtime']">{$info['endtime']|date='Y-m-d H:i:s',###}</notempty>">
+								<span class="gray ml10">超过截止日期前台不再显示，不填则不限</span>
+							</td>
+						</tr>																	
+					</table>			
+				</div>
+			</div>
+			<div class="mt10">
+				<input type="submit" value="确定" id="dosubmit" name="dosubmit" class="smt mr10" style="margin: 0 0 10px 100px;">
+				<br />
+				<br />
+				<br />
+			</div>
+		</div>
+	</div>
+    </form>
+
+
+	<include file="Public:footer" />

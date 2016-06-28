@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>phpcms V9 - 后台管理中心</title>
+<link href="__PUBLIC__/attachment/css/reset.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/attachment/css/zh-cn-system.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/attachment/css/table_form.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="__PLUGIN__/jquery-1.9.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/my97/wdatepicker.js"></script>
+<style type="text/css">
+	html{_overflow-y:scroll}
+</style>
+<link href="__PLUGIN__/swfupload/swfupload.css?v=s" rel="stylesheet" type="text/css" />
+<form action="{:U('search')}" method="get">
+<input type="hidden" value="{$module}" name="module">
+<input type="hidden" value="{$num}" name="num">
+<div class="lh26" style="padding:10px 0 0">
+<label>名称</label>
+<input type="text" name="keywords"  value="{$keywords}" class="input-text" name="keywords"> 
+<label>日期</label>
+<input type="type" name="starttime" id="d4311" onfocus="WdatePicker({maxDate:'#F{ $dp.$D(\'d4312\')}'})" class="input-text Wdate" value="{$starttime}" size="13px;" readonly> -
+<input type="type" name="endtime" id="d4312" onfocus="WdatePicker({minDate:'#F{ $dp.$D(\'d4311\')}'})" class="input-text Wdate" value="{$endtime}" size="13px;" readonly>
+<input type="submit" value="搜索" class="button" name="dosubmit">
+</div>
+</form>
+<div class="bk20 hr"></div>
+<ul class="attachment-list"  id="fsUploadProgress">
+<volist name="list" id="vo">
+
+
+						
+
+
+<li>
+	<div class="img-wrap">
+		<a href="javascript:;" onclick="javascript:album_cancel(this,'34','{$vo['path']}')">
+		<div class="icon"></div>
+		<switch name="vo.module">
+		<case value="0">
+		<img src="{$vo['path']}" width="80" path="{$vo['path']}" title="{$vo['filename']}"/>
+		</case>
+		<case value="1">
+		<img src="/Public/Admin/img/ext/rar.png" width="80" path="{$vo['path']}" title="{$vo['filename']}"/>
+		</case>
+		<case value="2">
+		<img src="/Public/Admin/img/ext/flv.png" width="80" path="{$vo['path']}" title="{$vo['filename']}"/>
+		</case>
+        </switch>		
+		</a>
+	</div>
+</li>
+</volist>
+
+</ul>
+ <div id="pages" class="text-c"> 
+  <!--  <a class="a1">34条</a> <a href="index.php?m=attachment&c=attachments&a=album_load&args=50%2Cgif%7Cjpg%7Cjpeg%7Cpng%7Cbmp%2C1&page=0" class="a1">上一页</a> <span>1</span> <a href="index.php?m=attachment&c=attachments&a=album_load&args=50%2Cgif%7Cjpg%7Cjpeg%7Cpng%7Cbmp%2C1&page=2">2</a> <a href="index.php?m=attachment&c=attachments&a=album_load&args=50%2Cgif%7Cjpg%7Cjpeg%7Cpng%7Cbmp%2C1&page=3">3</a> <a href="index.php?m=attachment&c=attachments&a=album_load&args=50%2Cgif%7Cjpg%7Cjpeg%7Cpng%7Cbmp%2C1&page=4">4</a> <a href="index.php?m=attachment&c=attachments&a=album_load&args=50%2Cgif%7Cjpg%7Cjpeg%7Cpng%7Cbmp%2C1&page=5">5</a> <a href="index.php?m=attachment&c=attachments&a=album_load&args=50%2Cgif%7Cjpg%7Cjpeg%7Cpng%7Cbmp%2C1&page=2" class="a1">下一页</a>  -->
+  {$page}    
+ </div>
+ 
+<script type="text/javascript">
+$(document).ready(function(){
+	set_status_empty();
+});	
+function set_status_empty(){
+	parent.window.$('#att-status').html('');
+	parent.window.$('#att-name').html('');
+}
+function album_cancel(obj,id,source){
+	var src = $(obj).children("img").attr("path");
+	var filename = $(obj).children("img").attr("title");
+	if($(obj).hasClass('on')){
+		$(obj).removeClass("on");
+		var imgstr = parent.window.$("#att-status").html();
+		var length = $("a[class='on']").children("img").length;
+		var strs = filenames = '';
+		//$.get('index.php?m=attachment&c=attachments&a=swfupload_json_del&aid='+id+'&src='+source);
+		for(var i=0;i<length;i++){
+			strs += '|'+$("a[class='on']").children("img").eq(i).attr('path');
+			filenames += '|'+$("a[class='on']").children("img").eq(i).attr('title');
+		}
+		parent.window.$('#att-status').html(strs);
+		parent.window.$('#att-name').html(filenames);
+	} else {
+		var num = parent.window.$('#att-status').html().split('|').length;
+		var file_upload_limit = '{$num}';
+		if(num > file_upload_limit) {alert('不能选择超过'+file_upload_limit+'个附件'); return false;}
+		$(obj).addClass("on");
+		//$.get('index.php?m=attachment&c=attachments&a=swfupload_json&aid='+id+'&src='+source);
+		parent.window.$('#att-status').append('|'+src);
+		parent.window.$('#att-name').append('|'+filename);
+	}
+}
+</script>

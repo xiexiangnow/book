@@ -1,0 +1,29 @@
+	<div id="header">
+		<div class="logo">
+			<a href="">
+				<img src="__IMG__/member_logo.png" height="60" />
+			</a>
+			<h3>会员中心</h3>
+		</div>
+		<div class="link">
+			你好 ({$uinfo['account']})
+			<span> | </span>
+			<a href="{:U('Index/logout')}" onClick="javascript:return confirm('确认退出系统?');">退出</a>
+			<span> | </span>
+			<a href="/">首页</a>
+		</div>
+		<div class="nav-bar">
+			<map>
+				<ul class="nav-site cu-span">
+				<volist name="umenu" id="vo">
+					<li>
+						<a href="/{$vo['path']}?t={$key}" <eq name="t" value="$key">class="on"</eq>>
+							<span>{$vo['title']}</span>
+						</a>
+					</li>
+					<li class="line">|</li>
+				</volist>	
+				</ul>
+			</map>
+		</div>
+	</div>

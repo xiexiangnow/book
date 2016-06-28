@@ -1,0 +1,83 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/kindeditor/kindeditor.js"></script>
+<script>
+	KindEditor.ready(function(K) {
+		var editor1 = K.create('textarea[name="content"]', {
+			width: '900px',
+			height: '400px',
+			allowFileManager : false,
+			allowFlashUpload:true,
+			uploadJson : '{:U('Public/editupload')}'							
+		});
+	});
+</script>
+</head>
+<body>
+
+
+	<div class="subnav">
+		<div class="content_menu ib_a blue line_x">
+			<a href="{:U('index')}">
+				<em>内容管理</em>
+			</a>
+			<span>|</span>
+			<a href="javascript:;" class="on">
+				<em>编辑内容</em>
+			</a>						
+		</div>
+	</div>
+
+	<div class="pad_lr_10">
+		<div class="col_tab">
+			<div class="J_panes">			
+			<form action="<notempty name='info'>{:U('edit')}<else/>{:U('add')}</notempty>" method="post">
+            <input type="hidden" name="id" value="{$info['id']}">	
+            <input type="hidden" name="category_id" value="{$catid}">
+            <input type="hidden" name="type" value="{$type}">
+            <input type="hidden" name="module" value="1">
+					<table width="100%" cellspacing="0" class="table_form">
+						<tr>
+							<th width="120">所属栏目 :</th>
+							<td><strong>{$title}</strong></td>
+						</tr>
+						<tr>
+							<th><font color="red">*</font> 标题 :</th>
+							<td>
+								<input type="text" name="title" id="J_title" value="{$info['title']}" class="input-text" size="50">
+							</td>
+						</tr>
+
+						<tr>
+							<th><font color="red">*</font> 内容：</th>
+							<td>
+								<textarea id="content" name="content">{$info['content']}</textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>发布 :</th>
+							<td>
+								<label>
+									<input type="radio" name="state" class="radio_style" value="1" <eq name="info['state']" value="1">checked="checked"</eq>>是
+								</label>
+								&nbsp;&nbsp;
+								<label>
+									<input type="radio" name="state" class="radio_style" value="0" <eq name="info['state']" value="0">checked="checked"</eq>>否
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th>&nbsp;</th>
+							<td>
+								<input type="submit" value="确定" name="dosubmit" class="smt mr10">
+							</td>
+						</tr>						
+					</table>	
+			</form>			
+			</div>
+		</div>
+	</div>
+
+
+
+	<include file="Public:footer" />

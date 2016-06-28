@@ -1,0 +1,291 @@
+<include file="Public:header"/>
+
+
+<div class="main">
+    <div class="main_box">
+
+        <div class="main_r_ico">
+            <div class="biaotou">学生工作通知公告栏</div>
+            <div class="news_info">
+                <ul style=" height:110px;">
+                    <notempty name="cast">
+                        <volist name="cast" id="cast">
+
+                            <li><a href={:U("show/".$cast['id'])} target="_blank"
+                                   title="{$cast['title']}">{:msubstr($cast['title'],0,10)} </a></li>
+                        </volist>
+                    <else/>
+                        没有内容
+                    </notempty>
+
+
+
+                </ul>
+            </div>
+
+
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td><a href="{:U('News/39')}" target="_blank"><img
+                            src="/Public/Index/img/r_ico_01.jpg"/></a></td>
+                </tr>
+                <tr>
+                    <td><a href="{:U('News/41')}" target="_blank"><img
+                            src="/Public/Index/img/r_ico_02.jpg"/></a></td>
+                </tr>
+                <tr>
+                    <td><a href="{:U('News/43')}" target="_blank"><img
+                            src="/Public/Index/img/r_ico_03.jpg"/></a></td>
+                </tr>
+                <tr>
+                    <td><a href="{:U('News/45')}" target="_blank"><img
+                            src="/Public/Index/img/r_ico_04.jpg"/></a></td>
+                </tr>
+                <tr>
+                    <td><a href="{:U('News/47')}" target="_blank"><img
+                            src="/Public/Index/img/r_ico_05.jpg"/></a></td>
+                </tr>
+            </table>
+
+            <div class="biaotou" style="margin-top:10px;">实验设备</div>
+            <div class="news_info">
+
+                <script language="javascript">
+                    var swf_width=165;
+                    var swf_height=115;
+                    var configtg='0x000000|1|0xEEF0F2|0|0xffffff|0x333333|0x000033|3|2|1|_blank';
+                    var files="{$imgname}";
+                    var links="{$imgurl}";
+                    var texts="{$imgtitle}";
+                    document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ swf_width +'" height="'+ swf_height +'">');
+                    document.write('<param name="movie" value="__PUBLIC__/Index/bcastr3.swf"><param name="quality" value="high">');
+                    document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+                    document.write('<param name="FlashVars" value="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'&bcastr_config='+configtg+'">');
+                    document.write('<embed src="__PUBLIC__/Index/bcastr3.swf" wmode="opaque" FlashVars="bcastr_file='+files+'&bcastr_link='+links+'&menu="false" quality="high" width="'+ swf_width +'" height="'+ swf_height +'" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); document.write('</object>');
+                </script>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <div class="main_l">
+            <div class="biaotou">学校通知公告栏
+                <a href="{:U('news/1-5')}" title="学校通知公告栏" target="_blank" class="f_r">更多</a>
+            </div>
+            <div class="news_info">
+                <ul>
+                    <marquee onMouseOver=this.stop()
+                             onMouseOut=this.start() scrollamount=1
+                             scrolldelay=1 direction=up width=204
+
+                             height=185>
+                        <notempty name="notice">
+                        <volist name="notice" id="not">
+                            <li><a href="{:U('show/'.$not['id'])}" target="_blank"
+                                   title="{$not['title']}">{:msubstr($not['title'],0,13)}</a></li>
+                        </volist>
+                            <else/>
+                            没有内容
+                        </notempty>
+
+                    </marquee>
+                </ul>
+            </div>
+
+
+            <div class="biaotou">学院新闻
+                <a href="{:U('news/1-3')}" title="学校通知公告栏" target="_blank" class="f_r">更多</a>
+            </div>
+            <div class="news_info">
+                <ul style=" height:165px;">
+                    <notempty name="news">
+                    <volist name="news" id='new'>
+                        <li><a href="{:U('show/'.$new['id'])}" target="_blank" title="{$new['title']}">{:msubstr($new['title'],0,12)}</a>
+                        </li>
+
+                    </volist>
+                        <else/>
+                        没有内容
+                    </notempty>
+
+
+                </ul>
+            </div>
+
+
+            <div class="mail_ico">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+
+                    <tr>
+                        <td height="61" colspan="2">
+                            <div class="search">
+
+                                <form action="{:U('news/search')}" method="get">
+                                    <input type="text" name="keywords" style="width:130px;"/>
+
+                                    <input type="submit" value="查询"/>
+                                </form>
+
+                                <!--<img src="__IMG__/search_ico.jpg" width="19" height="19" class="search_ico" />-->
+
+                            </div>
+                        </td>
+                    </tr>
+                    <!--邮箱-->
+                    <tr>
+                        <?php
+                        $dean=C('DEAN_EMAIL');
+                        $clerk=C('CLERK_EMAIL');
+                        ?>
+                        <td align="center"><a href="{$clerk}" target="_blank"> <img src="__IMG__/shuji.jpg" width="98" height="56"/></a></td>
+                        <td align="center"><a href="{$dean}"target="_blank"><img src="__IMG__/yuanzhang.jpg" width="98" height="56"/></a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="main_r">
+            <div class="hot_news">
+                <div class="news">
+                    <ul><a href="{:U('show/'.$list_pic['id'])}" target="_blank" title="{$list_pic['title']}"> <h2>{:msubstr($list_pic['title'],0,13)} </h2></a>
+
+                        <p>
+                           {:msubstr($list_pic['description'],0,90)}
+                        </p>
+                    </ul>
+                </div>
+                <div class="img"><a href="{:U('show/'.$list_pic['id'])}" target="_blank" title="{$list_pic['title']}"><img src="{$list_pic['coverimg']}"/></a>
+
+                    <div class="text_info"><a href="{:U('show/'.$list_pic['id'])}" target="_blank" title="{$list_pic['title']}">{:msubstr($list_pic['title'],0,13)} </a>
+
+                        <div class="text_info_bj"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="news_info">
+
+
+                <div class="info_r"><h1><span><a href="{:U('news/36-21')}" target="_blank">更多</a></span><em><img src="__IMG__/ico_02.jpg"/></em>研究生教育</h1>
+
+                    <!--<div class="info_nav"><a href="javascript:;" class="hover" id="two1" onclick="setTab('two',1,2)">本科生教育</a><a-->
+                            <!--&lt;!&ndash;href="javascript:;" id="two2" onclick="setTab('two',2,2)">研究生教育</a></div>&ndash;&gt;-->
+                    <!--<div class="info_container" id="con_two_1">-->
+                        <!--<ul>-->
+                            <!--<notempty name="nursing">-->
+                                 <!--<volist name="nursing" id="nurs">-->
+                                   <!--<li><span>{:date('Y/m/d',$nurs['time'])}</span>-->
+                                   <!--<a href="{:U('news/show',array('id'=>$nurs['id']))}" target="_blank" title="{$nurs['title']}">{:msubstr($nurs['title'],0,30)}</a></li>-->
+                                <!--</volist>-->
+                                <!--<else/>-->
+                                <!--没有内容-->
+                            <!--</notempty>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+
+                    <div class="info_container" id="con_two_2" >
+                        <ul>
+                            <notempty name="studing">
+ <volist name="studing" id="stu">
+  <li><span>{:date('Y/m/d',$stu['time'])}</span>
+   <a href="{:U('show/'.$stu['id'])}" target="_blank" title="{$stu['title']}">{:msubstr($stu['title'],0,30)}</a></li>
+ </volist>
+                                <else/>
+                                没有内容
+                            </notempty>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="info_l"><h1><span><a href="{:U('news/23')}" target="_blank">更多</a></span><em><img src="__IMG__/ico_01.jpg"/></em>本科教育</h1>
+
+                    <!--<div class="info_nav"><a href="javascript:;" class="hover" id="one1" onclick="setTab('one',1,2)">学生工作</a><a-->
+                            <!--href="javascript:;" id="one2" onclick="setTab('one',2,2)">科研工作</a></div>-->
+                    <div class="info_container" id="con_one_2" >
+                        <ul>
+
+                            <notempty name="study">
+                                <volist name="study" id="study">
+                                    <li><span>{:date('Y/m/d',$study['time'])}</span>
+                                        <a href="{:U('show/'.$study['id'])}" target="_blank" title="{$study['title']}">{:msubstr($study['title'],0,30)}</a></li>
+                                </volist>
+                                <else/>
+                                没有内容
+                            </notempty>
+
+                        </ul>
+                    </div>
+
+
+                    <!--<div class="info_container" id="con_one_1">-->
+                        <!--<ul>-->
+                            <!--<notempty name="student">-->
+                            <!--<volist name="student" id="std">-->
+                                <!--<li><span>{:date('Y/m/d',$std['time'])}</span>-->
+                                    <!--<a href="{:U('news/show',array('id'=>$std['id']))}" target="_blank" title="{$std['title']}">-->
+                                        <!--{:msubstr($std['title'],0,30)}</a></li>-->
+                            <!--</volist>-->
+                                <!--<else/>-->
+                                <!--没有内容-->
+                            <!--</notempty>-->
+
+                        <!--</ul>-->
+                    <!--</div>-->
+
+                    <!--  第二栏 -->
+                </div>
+                <div class="news_info">
+                    <div class="info_r">
+                        <h1><span><a href="{:U('news/20-25')}" target="_blank">更多</a></span><em><img src="__IMG__/ico_04.jpg"/></em>学生工作</h1>
+
+                        <div class="info_container" id="con_two_1">
+                            <ul>
+                                <notempty name="cultural">
+                                <volist name="cultural" id="cultural">
+                                    <li><span>{:date('Y/m/d',$cultural['time'])}</span>
+                                        <a href="{:U('show/'.$cultural['id'])}" target="_blank" title="{$cultural['title']}">{:msubstr($cultural['title'],0,30)}</a></li>
+                                </volist>
+                                    <else/>
+                                    没有内容
+                                </notempty>
+                            </ul>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="info_l">
+                        <h1><span><a href="{:U('news/20-22')}" target="_blank">更多</a></span><em><img src="__IMG__/ico_03.jpg"/></em>科研工作</h1>
+
+                        <div class="info_container" id="con_one_1">
+                            <ul>
+                                <notempty name="serve">
+                                <volist name="serve" id="serve">
+                                    <li><span>{:date('Y/m/d',$serve['time'])}</span>
+                                        <a href="{:U('show/'.$serve['id'])}" target="_blank" title="{$serve['title']}">{:msubstr($serve['title'],0,30)}</a></li>
+                                </volist>
+                                    <else/>
+                                    没有内容
+                                </notempty>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <include file="Public:footer"/>

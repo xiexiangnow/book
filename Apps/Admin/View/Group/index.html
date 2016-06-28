@@ -1,0 +1,60 @@
+<include file="Public:header" />
+</head>
+<body>
+
+
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+    	<a class="add fb J_showdialog" href="{:U('group/gadd')}" data-title="添加权限组"><em>添加权限组</em></a>　            
+    </div>
+</div>
+
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+    
+        <table width="100%" cellspacing="0">
+        
+            <thead>
+            <tr>                
+				<th width="60">编号</th>
+				<th align="left">名称</th>
+				<th width="200">排序</th>
+				<th width="200">状态</th>
+				<th width="120">操作</th>
+            </tr>
+            </thead>
+            
+    	    <tbody>
+    	    
+				<volist name="list" id="vo">
+					<tr>
+					    <td align="center">{$vo['id']}</td>
+						<td>{$vo['title']}</td>								
+						<td align="center">{$vo['sort']}</td>
+						<td align="center">
+						  <if condition="$vo['state'] eq 1">
+						   <img data-tdtype="toggle" data-field="status" data-id="1" data-value="1" src="__IMG__/toggle_enabled.gif" />
+						  <else/>
+						 <img data-tdtype="toggle" data-field="status" data-id="1" data-value="1" src="__IMG__/toggle_disabled.gif" />
+						  </if>
+						</td>				
+						<td align="center">
+							<a href="{:U('Group/edit',array('id'=>$vo['id']))}">修改</a>
+							|
+							<a href="{:U('Group/del',array('id'=>$vo['id']))}" onclick="javascript:return confirm('确定删除吗 ?')">删除</a>
+						</td>
+					</tr>
+				</volist>
+                                             
+            </tbody>
+        </table>
+    </div>
+   
+    
+</div>
+
+
+
+
+
+<include file="Public:footer" />

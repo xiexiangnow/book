@@ -1,0 +1,245 @@
+<include file = "Public:header"/>
+<include file = "Public:nav_list"/>
+<include file = "Public:top_nav"/>
+
+
+<link rel="stylesheet" href="__PUBLIC__/Index/js/webuploader/webuploader.css"/>
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{$child}</h3>
+                <div class="panel-options">
+                    <a href="#" data-toggle="panel">
+                        <span class="collapse-icon">–</span>
+                        <span class="expand-icon">+</span>
+                    </a>
+                    <a href="#" data-toggle="remove">
+                        ×
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <form action="" role="form" class="form-horizontal" method="post" id="addInfoForm" enctype="multipart/form-data">
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">类型选择</label>
+
+                        <div class="col-sm-10">
+                            <select class="form-control" name="type_id">
+                                <volist name="booType" id="v">
+                                 <option value="{$v['id']}">{$v['name']}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >图书编号 <span style="color:red;">*</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="num" class="form-control"  placeholder="请输入图书编号">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >书名 <span style="color:red;">*</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" class="form-control"  placeholder="请输入图书名称">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >出版社名称 <span style="color:red;">*</span> </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="publisher" class="form-control"  placeholder="图书出版社">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >作者 <span style="color:red;">*</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="author" class="form-control"  placeholder="请输入图书作者">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >译者 </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="translator" class="form-control"  placeholder="请输入译者">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >出版时间 <span style="color:red;">*</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="outtime" id="outtime" class="form-control"  placeholder="请输入出版时间">
+                        </div>
+                    </div>
+
+                    <!--<script src="__PUBLIC__/Index/js/uploadPreview.js"></script>-->
+
+                    <!--<div class="form-group" >-->
+                        <!--<label class="col-sm-2 control-label" >图书封面 <span style="color:red;">*</span></label>-->
+
+                        <!--<div class="col-sm-10" id="warp">-->
+                            <!--<li style="list-style: none;">-->
+                            <!--<input type="file" name="outface" class="form-control" id="up_img_WU_FILE_0" style="padding-bottom: 35px;" placeholder="请上传1:2比例的图片" >-->
+                            <!--</li>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+
+                   <!--&lt;!&ndash;图片预览&ndash;&gt;-->
+                    <!--<div class="form-group" >-->
+                        <!--<label class="col-sm-2 control-label" ></label>-->
+                        <!--<div class="col-sm-10">-->
+                            <!--<li style="list-style: none;">-->
+                                <!--<img id="imgShow_WU_FILE_0" width="160" height="120" />-->
+                            <!--</li>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--dom结构部分-->
+                    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Index/webuploader/webuploader.css">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >图书封面</label>
+                        <div class="col-sm-10" id="show"> <!--图片预览区-->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" ></label>
+                        <div class="col-sm-10">
+                            
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" ></label>
+                        <div class="col-sm-10">
+                            <div id="fileList" class="uploader-list"></div>
+                            <div id="filePicker">选择图片</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+                         <span style="float: right;">
+                           <a type="button" class="btn btn-black btn-sm" onclick="submit_addinfo()" >提交</a>
+                        </span>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!--引入JS-->
+<!--<script type="text/javascript" src="/jquery-1.11.1.min.js"></script>-->
+<script type="text/javascript" src="__PUBLIC__/Index/webuploader/webuploader.js"></script>
+<script type="text/javascript">
+    var outtime = $('#outtime').val();
+
+    // 初始化Web Uploader
+    var uploader = WebUploader.create({
+
+        // 选完文件后，是否自动上传。
+        auto: true,
+
+        // swf文件路径
+        swf: '/Uploader.swf',
+
+        // 文件接收服务端。
+        server: 'uploadPic',
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#filePicker',
+
+        // 只允许选择图片文件。
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        }
+    });
+
+    // 当有文件添加进来的时候
+    uploader.on( 'fileQueued', function( file ) {
+        var $li = $(
+                        '<div id="' + file.id + '" class="file-item thumbnail" style="float:left;margin-left:5px;">' +
+                        '<img>' +
+                        '<div class="info">' + file.name + '</div>' +
+                        '</div>'
+                ),
+
+                $img = $li.find('img');
+
+
+        // $list为容器jQuery实例
+        $('#show').append( $li );
+
+        // 创建缩略图
+        // 如果为非图片文件，可以不用调用此方法。
+        // thumbnailWidth x thumbnailHeight 为 100 x 100
+        var thumbnailWidth  = 200;
+        var thumbnailHeight = 160;
+        uploader.makeThumb( file, function( error, src ) {
+            if ( error ) {
+                $img.replaceWith('<span>不能预览</span>');
+                return;
+            }
+
+            $img.attr( 'src', src );
+        }, thumbnailWidth, thumbnailHeight );
+    });
+
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on( 'uploadProgress', function( file, percentage ) {
+        var $li = $( '#'+file.id ),
+                $percent = $li.find('.progress span');
+
+        // 避免重复创建
+        if ( !$percent.length ) {
+            $percent = $('<p class="progress"><span></span></p>')
+                    .appendTo( $li )
+                    .find('span');
+        }
+
+        $percent.css( 'width', percentage * 100 + '%' );
+    });
+
+    // 文件上传成功，给item添加成功class, 用样式标记上传成功。  response回调参数
+    uploader.on( 'uploadSuccess', function( file,response ) {
+        $( '#'+file.id ).addClass('upload-state-done');
+        $('#pic_path').html(response.path);
+
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+        var $li = $( '#'+file.id ),
+                $error = $li.find('div.error');
+
+        // 避免重复创建
+        if ( !$error.length ) {
+            $error = $('<div class="error"></div>').appendTo( $li );
+        }
+
+        $error.text('上传失败');
+    });
+
+    // 完成上传完了，成功或者失败，先删除进度条。
+    uploader.on( 'uploadComplete', function( file) {
+        $( '#'+file.id ).find('.progress').remove();
+    });
+
+
+</script>
+<include file="Public:footer"/>

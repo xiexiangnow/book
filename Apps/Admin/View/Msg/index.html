@@ -1,0 +1,87 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/my97/WdatePicker.js"></script>
+</head>
+<body>
+
+	<div class="subnav">
+		<div class="content_menu ib_a blue line_x">
+			<a class="add fb J_showdialog" href="{:U('addmsg')}" data-title="添加管理员">
+				<em>发送消息</em>
+			</a>
+		</div>
+	</div>
+
+	<div class="pad_lr_10">
+
+		<form action="__ACTION__">
+			<table width="100%" cellspacing="0" class="search_form">
+				<tbody>
+					<tr>
+						<td>
+							<div class="explain_col">
+								标题<input name="keywords" type="text" class="input-text" size="20" value="{$keywords}">
+								时间<input name="starttime" type="text" size="13" id="d4311" onfocus="WdatePicker({maxDate:'#F{ $dp.$D(\'d4312\')}'})" class="input-text Wdate" value="{$starttime}" readonly>
+								至
+								<input name="endtime" type="text" size="13" id="d4312" onfocus="WdatePicker({minDate:'#F{ $dp.$D(\'d4311\')}'})" class="input-text Wdate" value="{$endtime}" readonly>
+								类型
+								<select name="type">
+									<option value="0">请选择</option>
+									<option value="1"
+										<eq name="type" value="1">selected</eq>>全部会员
+									</option>
+									<option value="2" <eq name="type" value="2">selected</eq>>部分会员
+									</option>
+								</select>
+								<input type="submit" name="search" class="btn" value="搜索" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+
+		<div class="J_tablelist table_list">
+
+			<table width="100%" cellspacing="0">
+				<thead>
+					<tr>
+						<th align="left">标题</th>
+						<th>类型</th>
+						<th>接受数</th>
+						<th>已读数</th>
+						<th>发送时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+
+				<tbody>
+				
+					<volist name="list" id="vo">
+					<tr>
+						<td>{$vo['title']}</td>
+						<td align="center">
+							<?php echo 1==$vo['type']?'全部':'部分' ?>会员
+						</td>
+						<td align="center">{$vo['num']}</td>
+						<td align="center">{$vo['num_read']}</td>
+						<td align="center">{$vo['time']|date='Y-m-d H:i',###}</td>
+						<td align="center">
+							<a href="{:U('info', array('id'=>$vo['id']))}" target="_blank" title="点击查看详细">查看</a>
+						</td>
+					</tr>
+					</volist>
+
+				</tbody>
+			</table>
+		</div>
+
+		<div class="btn_wrap_fixed">
+			<div id="pages">{$pagestr}</div>
+		</div>
+
+	</div>
+
+
+
+	<include file="Public:footer" />

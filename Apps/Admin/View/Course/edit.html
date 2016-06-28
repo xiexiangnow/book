@@ -1,0 +1,137 @@
+<include file="Public:header" />
+<script src="__PLUGIN__/jquery-1.9.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script type="text/javascript" src="__JS__/attachment.js"></script>
+</head>
+<body>
+
+	<div class="subnav">
+		<h1 class="title_2 line_x">
+			<notempty name="info">修改<else />添加</notempty>课程
+		</h1>
+	</div>
+
+	<div class="pad_lr_10">
+		<form action="{:U('edit')}" method="post"
+			enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$info['id']}">
+			<table width="100%" cellspacing="0" class="table_form">
+				<tbody>
+					<tr>
+						<th>
+							<font color="red">*</font>
+							课程名称：
+						</th>
+						<td>
+							<input name="title" type="text" class="input-text" size="50" value="{$info['title']}">
+							<span class="gray ml10"></span>
+						</td>
+					</tr>
+
+					<tr>
+						<th>所属栏目：</th>
+						<td>
+							<select name="sid">
+								<option value="0">请选择</option>
+                                   {$tree}
+							</select>	
+						</td>
+					</tr>
+
+					<tr>
+						<th>摘要：</th>
+						<td>
+							<textarea class="input_textarea" cols="70" rows="2"name="info">{$info['info']}</textarea>
+						</td>
+					</tr>
+										
+					<tr>
+						<th>内容：</th>
+						<td>
+							<textarea class="input_textarea" cols="70" rows="7"name="content">{$info['content']}</textarea>
+						</td>
+					</tr>					
+
+
+						<tr>
+							<th width="120">封面图片 :</th>
+							<td>
+							    <div style="margin-bottom:5px;">
+							       <input type="hidden" name="coverimg" id="thumb" value="{$info['coverimg']}">
+							       <notempty name="info['coverimg']">
+							       <img height="113" src="{$info['coverimg']}" id="thumb_preview" style="cursor:hand">
+							       <else/>
+							       <img height="113" src="/Public/Admin/img/upload-pic.png" id="thumb_preview" style="cursor:hand">
+							       </notempty>
+							       <a href="javascript:;" onclick="removeImg('thumb');">移除</a>
+							    </div>                				             	 			
+								<input type="button" onclick="javascript:flashupload(0,'图片上传',1,'jpg|jpeg|png|bmp|gif',2,'thumb',thumb_images)" class="btn" value="上传图片">
+				                <span style="color:red;"></span>
+                			</td>
+						</tr>
+
+					<tr>
+						<th>
+							<font color="red">*</font>
+							主讲教师：
+						</th>
+						<td>
+							<input name="teacher" type="text" class="input-text" size="50" value="{$info['teacher']}">
+							<span class="gray ml10"></span>
+						</td>
+					</tr>
+					
+					<tr>
+						<th>							
+							所属院系：
+						</th>
+						<td>
+							<input name="tsystem" type="text" class="input-text" size="50" value="{$info['tsystem']}">
+							<span class="gray ml10"></span>
+						</td>
+					</tr>					
+
+					<tr>
+						<th>讲师简介：</th>
+						<td>
+							<textarea class="input_textarea" cols="70" rows="7"name="tinfo">{$info['tinfo']}</textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<th>排序：</th>
+						<td>
+							<input name="sort" type="text" class="input-text" size="30" value="{$info['sort']}" />
+							<span class="gray ml10">越大越靠前</span>
+						</td>
+					</tr>
+
+					<tr>
+						<th>是否推荐：</th>
+						<td>
+							<label>
+								<input name="top" type="radio" class="input-text" size="50" value="1" <eq name="info['top']" value="1">checked</eq>/> 是
+							</label>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<label>
+								<input name="top" type="radio" class="input-text" size="50"value="0" <eq name="info['top']" value="0">checked</eq>/> 否
+							</label>
+						</td>
+					</tr>
+
+
+					<tr>
+						<th width="120">&nbsp;</th>
+						<td valign="bottom">
+							<input class="smt  mr10" type="submit" name="submit" value="提交" />
+							&nbsp;&nbsp;
+							<a class="smt" href="{:U('index')}">返回列表</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<include file="Public:footer" />

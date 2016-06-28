@@ -1,0 +1,198 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/kindeditor/kindeditor.js"></script>
+<script type="text/javascript" src="__JS__/jquery.tools.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/my97/wdatepicker.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script type="text/javascript" src="__JS__/attachment.js"></script>
+<script>	
+	$(function(){
+		$('ul.J_tabs').tabs('div.J_panes > div');
+  
+		KindEditor.ready(function(K) {
+			var editor1 = K.create('textarea[name="content"]', {
+				width: '900px',
+				height: '400px',
+				allowFileManager : false,
+				allowFlashUpload:true,
+				uploadJson : '{:U('Public/editupload')}'							
+			});
+		});		
+			
+		$('#changeCat').click(function(){
+			  art.dialog.open("{:U('Navigate/cats',array('module'=>$module,''))}",{title: '请选择内容栏目',id:'cats',width:350,height: 420,lock: true});	
+		 });			  
+	})
+	
+			
+	function changeCat(module,title){
+		$('#category_id').val(module);
+		$('#changeCat').html(title);
+		art.dialog({id:'cats'}).close();
+	}
+	
+</script>
+</head>
+<body>
+
+
+	<div class="subnav">
+		<div class="content_menu ib_a blue line_x">
+			<a href="{:U('index')}">
+				<em>内容管理</em>
+			</a>
+			<span>|</span>
+			<a href="javascript:;" class="on">
+				<em>编辑内容</em>
+			</a>			
+		</div>
+	</div>
+
+			<form action="<notempty name='info'>{:U('edit')}<else/>{:U('add')}</notempty>" method="post">
+            <input type="hidden" name="id" value="{$info['id']}">	
+            <input type="hidden" id="category_id" name="category_id" value="{$catid}">
+            <input type="hidden" name="type" value="{$type}">
+            <input type="hidden"  name="module" value="{$module}">
+	<div class="pad_lr_10">
+		<div class="col_tab">
+			<ul class="J_tabs tab_but cu_li">
+				<li class="current">基本信息</li>
+				<li>扩展信息</li>
+			</ul>
+			<div class="J_panes">
+				<div class="content_list pad_10">
+					<table width="100%" cellspacing="0" class="table_form">
+						<tr>
+							<th width="120">所属栏目 :</th>
+							<td>
+							    <strong><a href="javascript:;" id="changeCat" title="点击修改分类">{$title}</a></strong>							     
+							</td>
+						</tr>
+						<tr>
+							<th><font color="red">*</font> 标题 :</th>
+							<td>
+								<input type="text" name="title" class="input-text" size="100" value="{$info['title']}">
+							</td>
+						</tr>
+                       <if condition="$catid eq 2 || $catid eq 3 || $catid eq 4 || $catid eq 5 ">
+                        <tr>
+                            <th> 文章标签 :</th>
+                            <td>
+                                <select name="article_type" id="">
+                                    <volist name=":C('ARTICLE_TYPE')" id="vo">
+                                       <option value="{$vo}" <if condition="$info['article_type'] eq $vo">selected</if>>{$vo}</option>
+                                    </volist>
+                                </select>
+                                <span style="color:red">注意：请选取文章的所属分类</span>
+                            </td>
+                        </tr>
+                           </if>
+						<tr>
+							<th width="120">封面图片 :</th>
+							<td>
+							    <div style="margin-bottom:5px;">
+							       <input type="hidden" name="coverimg" id="thumb" value="{$info['coverimg']}">
+							       <notempty name="info['coverimg']">
+							       <img height="113" src="{$info['coverimg']}" id="thumb_preview" style="cursor:hand">
+							       <else/>
+							       <img height="113" src="/Public/Admin/img/upload-pic.png" id="thumb_preview" style="cursor:hand">
+							       </notempty>
+							       <a href="javascript:;" onclick="removeImg('thumb');">移除</a>
+							    </div>
+								<input type="button" onclick="javascript:flashupload(0,'图片上传',1,'jpg|jpeg|png|bmp|gif',10,'thumb',thumb_images)" class="btn" value="上传封面图片">
+								在详情页中显示<label><input type="radio" name="coverimg_show" value="1" <eq name="info['coverimg_show']" value="1">checked="checked"</eq>>是</label>&nbsp;&nbsp;
+								<label><input type="radio" name="coverimg_show" value="0" <eq name="info['coverimg_show']" value="0">checked="checked"</eq>>否</label>
+				                <span style="color:red;"></span>
+                			</td>
+						</tr>						
+						<tr>
+							<th><font color="red">*</font> 内容 :</th>
+							<td>
+								<textarea id="content" name="content">{$info['content']}</textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>关键词 :</th>
+							<td>
+								<input type="text" name="keywords" class="input-text" size="115" value="{$info['keywords']}">
+								<span class="gray ml10">用于内容搜索</span>
+							</td>
+						</tr>																		
+						<tr>
+							<th>摘要 :</th>
+							<td>
+								<textarea name='description' style="width: 700px; height: 65px;" title="留空则自动截取内容前140个字符">{$info['description']}</textarea>
+							</td>
+						</tr>							
+						<tr>
+							<th>是否推荐 :</th>
+							<td>
+							    <label>
+									<input type="radio" name="top" class="radio_style" value="1"  <eq name="info['top']" value="1">checked="checked"</eq>>是
+								</label>
+								&nbsp;&nbsp;
+								<label>
+									<input type="radio" name="top" class="radio_style" value="0"  <eq name="info['top']" value="0">checked="checked"</eq>>
+									否
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th>排序 :</th>
+							<td>
+								<input type="text" name="sort" class="input-text" size="25" value="{$info['sort']}">
+								<span class="gray ml10">必须是整数，越大越靠前</span>
+							</td>
+						</tr>	
+						<tr>
+							<th>发布 :</th>
+							<td>
+								<label>
+									<input type="radio" name="state" class="radio_style" value="1" <eq name="info['state']" value="1">checked="checked"</eq>>是
+								</label>
+								&nbsp;&nbsp;
+								<label>
+									<input type="radio" name="state" class="radio_style" value="2" <eq name="info['state']" value="2">checked="checked"</eq>>否
+								</label>
+							</td>
+						</tr>																	
+					</table>
+				</div>
+				<div class="content_list pad_10 hidden">
+					<table width="100%" cellspacing="0" class="table_form">
+						<tr>
+							<th>作者 :</th>
+							<td>
+								<input type="text" name="writer" class="input-text" size="60" value="{$info['writer']}">
+							</td>
+						</tr>
+						<tr>
+							<th>阅读数 :</th>
+							<td>
+								<input type="text" name="view" class="input-text" size="60" value="{$info['view']}">
+							</td>
+						</tr>
+                        <tr>
+                            <th>发布时间 :</th>
+                            <td>
+                                <input type="text" name="time" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="input-text Wdate" size="25" value="<notempty name='info["time"]'>{$info['time']|date='Y-m-d H:i:s',###}</notempty>" readonly>
+                            </td>
+                        </tr>
+                    </table>
+				</div>
+			</div>
+			<div class="mt10">
+				<input type="submit" value="确定" id="dosubmit" name="dosubmit" class="smt mr10" style="margin: 0 0 10px 100px;">
+				<br />
+				<br />
+				<br />
+			</div>
+		</div>
+
+    </div>
+
+    </form>
+
+
+	<include file="Public:footer" />

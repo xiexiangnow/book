@@ -1,0 +1,159 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/my97/wdatepicker.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script type="text/javascript">
+/*设置状态*/
+function setStatus(id, status) {
+	if(-1==status){
+		if(!confirm('确定执行删除操作吗?')){
+			return false;
+		}
+	}
+	
+	if (!id || id.length == 0) {
+		return alert("请选择一条记录");	
+	}
+	
+	$('#myform').attr('action', "{:U('state')}");	
+	$('#state').val(status);
+	$('#myform').submit();	
+}	
+	/*排序*/
+	function setSort() {
+		$('#myform').attr('action', "{:U('Gather/sort')}");
+		$('#myform').submit();
+	}
+</script>
+</head>
+<body>
+
+	<div class="subnav">
+		<div class="content_menu ib_a blue line_x">
+			<a class="add fb J_showdialog" href="javascript:;" id="selected">
+			   <em>添加</em>
+			</a>
+		</div>
+	</div>
+
+	<div class="pad_lr_10">
+
+		<form action="{:U('index')}" method="get">
+			<table width="100%" cellspacing="0" class="search_form">
+				<tbody>
+					<tr>
+						<td>
+							<div class="explain_col">
+								标题或关键词
+								<input name="keywords" type="text" class="input-text" size="30" value="{$keywords}">
+                                发布时间
+								<input name="starttime" type="text" size="13" id="d4311" onfocus="WdatePicker({maxDate:'#F{ $dp.$D(\'d4312\')}'})" class="input-text Wdate" value="{$starttime}" readonly>
+								至
+								<input name="endtime" type="text" size="13" id="d4312" onfocus="WdatePicker({minDate:'#F{ $dp.$D(\'d4311\')}'})" class="input-text Wdate" value="{$endtime}" readonly>
+								顺序
+								<select name='show' class='select'>
+									<volist name=":C('DOC_SORT_TYPE')" id="vo">
+									<option value='{$key}' <if condition="$show eq $key">selected</if>>
+									  {$vo}
+									</option>
+									</volist>
+								</select>
+
+								<input type="submit" name="search" class="btn" value="搜索" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+		<div class="J_tablelist table_list">
+			<form action="{:U('Gather/index')}" id="myform">
+			<input type="hidden" name="state" value="1" id="state">			
+				<table width="100%" cellspacing="0">
+
+					<thead>
+						<tr>
+							<th width="40"><input type="checkbox" name="checkall" class="J_checkall"></th>							
+							<th align="left">标题</th>
+
+							<th>发布时间</th>
+							<th>排序</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+
+
+					<tbody>
+                        
+						<volist name="list" id="vo">
+						<tr>
+							<td align="center"><input type="checkbox" name='id[]' class="J_checkitem" value="{$vo['id']}"></td>							
+							<td>
+							    <if condition="$vo['top'] eq 1">
+							      <font color="red">(推荐)</font>
+							    </if>
+								<a href="{:U('Gather/info',array('id'=>$vo['id']))}" target="_blank" title="点击阅读内容">{$vo['title']}</a>
+							</td>
+
+							<td align="center">{$vo['time']|date="Y-m-d H:i",###}</td>
+							<td align="center">
+								<input type="text" style="text-align: center;" class="input-text" size="8" name="sort[{$vo['id']}]" value="{$vo['sort']}">
+							</td>
+							<td align="center">
+								<a href="{:U('Gather/edit',array('id'=>$vo['id']))}" title="点击修改">修改</a>
+								|
+								<if condition="$vo['state'] eq 1"> 
+								  <a href="{:U('Gather/state',array('id'=>$vo['id'],'state'=>2))}" title="点击禁用">开启</a>
+								<else /> 
+								  <a href="{:U('Gather/state',array('id'=>$vo['id'],'state'=>1))}" title="点击启用"><font color="red">禁用</font></a>
+								</if>
+								|
+								<a href="{:U('Gather/delete',array('id'=>$vo['id']))}" onclick="javascript:return confirm('确认删除该记录吗?删除后无法复原');" title="点击删除">删除</a>
+							</td>
+						</tr>
+						</volist>
+						
+						<empty name="list">
+						<tr>
+							<td colspan="6" align="center">暂无数据 !</td>							
+						</tr>						   
+						</empty>
+
+					</tbody>
+				</table>
+				</form>
+		</div>
+
+
+
+
+		<div class="btn_wrap_fixed">
+            <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">全选/取消</label>
+            <input type="button" value="批量启用" class="btn" onclick="setStatus($.checkBoxValue('id[]'), 1)"/>  
+            <input type="button" value="批量禁用" class="btn" onclick="setStatus($.checkBoxValue('id[]'), 0)"/>
+            <input type="button" value="批量删除" class="btn" onclick="setStatus($.checkBoxValue('id[]'), -1)"/>	
+			
+			<input type="button" value="排序" class="btn" onclick="setSort()" />
+			
+			<div id="pages">{$page}</div>
+		</div>
+
+
+
+
+<include file="Public:footer" />
+<script type="text/javascript" src="__JS__/listTable.js"></script>
+<script>
+$(function(){
+	$('.J_tablelist').listTable();
+});
+$(function(){
+	$('#selected').click(function(){
+
+        location="{:U('gather/add')}";
+		//art.dialog.open("{:U('Navigate/tree')}",{title: '请选择内容栏目',width:350,height: 420,lock: true});
+	})
+})
+</script>		

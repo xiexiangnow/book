@@ -1,0 +1,76 @@
+<include file="Public:header" />
+<script src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+/*排序*/
+function setSort() {
+	$('#myform').attr('action', "{:U('Menu/sort')}" );	
+	$('#myform').submit();	
+}
+</script>
+</head>
+<body>	
+
+
+
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+    	<a class="add fb J_showdialog" href="{:U('addmenu',array('pid'=>$top['id']))}" data-title="添加管理员"><em>添加菜单</em></a>　            
+    </div>
+</div>
+
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+        <form action="" id="myform">
+        <table width="100%" cellspacing="0">
+        
+            <thead>
+            <tr>                        
+				<th width="60">编号</th>
+				<th align="left">名称<gt name="top" value="1">&nbsp;<a href="{:U('index',array('pid'=>$top['pid']))}" title="返回到上级目录">(返回上级 {$top['title']})</a></gt></th>
+				<th align="left">路径</th>
+				<th width="200">等级</th>
+				<th>状态</th>
+				<th width="150">排序</th>
+				<th width="120">操作</th>
+            </tr>
+            </thead>
+            
+    	    <tbody>
+    	    
+				<volist name="list" id="vo">
+					<tr>	
+						<td align="center">{$vo['id']}</td>
+						<td><a href="{:U('index',array('pid'=>$vo['id']))}" title="点击查看下级目录">{$vo['title']}</a></td>
+						<td>{$vo['path']}</td>
+						<td align="center">{$vo['level']}</td>
+						<td align="center">
+						  <if condition="$vo['is_show'] eq 1">
+						     <img data-tdtype="toggle" data-field="status" data-id="1" data-value="1" src="__IMG__/toggle_enabled.gif" />
+						  <else/>
+						     <img data-tdtype="toggle" data-field="status" data-id="1" data-value="1" src="__IMG__/toggle_disabled.gif" />
+						  </if>				
+						</td>
+						<td align="center"><input type="text" style="text-align:center;" class="input-text" name="sort[{$vo['id']}]" value="{$vo['sort']}" size="8"></td>
+						<td align="center">
+							<a href="{:U('edit',array('id'=>$vo['id']))}">修改</a>					|
+							<a href="{:U('del',array('id'=>$vo['id']))}" onClick="javascript:return confirm('确认删除该栏目及子栏目吗?');">删除</a>
+						</td>
+					</tr>
+				</volist>
+                                             
+            </tbody>
+        </table>
+        </form>
+    </div>
+       
+  
+     
+    <div class="btn_wrap_fixed">
+        <input type="button" class="btn"onclick="setSort();" value="排序" />        
+    </div>
+     
+</div>
+
+
+
+<include file="Public:footer" />

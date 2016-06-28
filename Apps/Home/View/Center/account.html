@@ -1,0 +1,74 @@
+<include file="Public:header" />
+<link href="__CSS__/member.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+   <include file="Public:nav" />
+
+	<div id="memberArea">
+		
+        <include file="Public:left" />
+
+		<div class="col-auto">
+			<div class="col-1 ">
+				<h5 class="title">个人信息：</h5>
+				<div class="content">
+					<div class="col-1 member-info">
+						<div class="content">
+							<div class="col-left himg">
+								<a title="修改头像" href="{:U('Center/headify',array('t'=>2))}">
+									<img src="__IMG__/nophoto.gif" width="60" height="60">
+								</a>
+							</div>
+							<div class="col-auto">
+								<h5>									
+									{$uinfo['account']}
+								</h5>
+								<p class="blue">
+									昵称：{$uinfo['nickname']}， 登录次数：
+									<font style="color: #F00; font-size: 22px; font-family: Georgia, Arial; font-weight: 700">{$uinfo['logincount']}</font>
+									次， 上次登录信息：
+									<font style="color: #F00; font-size: 12px; font-family: Georgia, Arial; font-weight: 700">{$uinfo['lastlogin']}</font>									
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="bk10"></div>
+					<div class="col-1 ">
+						<h5 class="title">详细信息：</h5>
+						<div class="content">
+							<table width="100%" cellspacing="0" class="table_form">
+								<tr>
+									<th width="120">用户名：</th>
+									<td>{$uinfo['account']}</td>
+								</tr>
+								<tr>
+									<th width="120">真实姓名：</th>
+									<td>{$uinfo['truename']?$uinfo['truename']:'--'}</td>
+								</tr>
+								<tr>
+									<th width="120">昵称：</th>
+									<td>{$uinfo['nickname']?$uinfo['nickname']:'--'}</td>
+								</tr>								
+								<tr>
+									<th width="120">注册时间：</th>
+									<td>{$uinfo['reg_time']|date='Y-m-d H:i:s',###}</td>
+								</tr>
+								<tr>
+									<th width="120">注册ip：</th>
+									<td>{$uinfo['reg_ip']}</td>
+								</tr>
+								<tr>
+									<th width="120">性别：</th>
+									<td>{$uinfo['sex']?'男':'女'}</td>
+								</tr>							
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+
+		<include file="Public:footer" />

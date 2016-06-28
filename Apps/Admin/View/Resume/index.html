@@ -1,0 +1,190 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/kindeditor/kindeditor.js"></script>
+<script type="text/javascript" src="__JS__/jquery.tools.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/my97/wdatepicker.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script type="text/javascript" src="__JS__/attachment.js"></script>
+<script>
+    $(function(){
+        $('ul.J_tabs').tabs('div.J_panes > div');
+
+        KindEditor.ready(function(K) {
+            var editor1 = K.create('textarea[name="technical_skill"]', {
+                width: '900px',
+                height: '220px',
+                allowFileManager : false,
+                allowFlashUpload:true,
+                uploadJson : '{:U('Public/editupload')}'
+        });
+        var editor2 = K.create('textarea[name="work_experience"]', {
+            width: '900px',
+            height: '220px',
+            allowFileManager : false,
+            allowFlashUpload:true,
+            uploadJson : '{:U('Public/editupload')}'
+    });
+    });
+
+    $('#changeCat').click(function(){
+        art.dialog.open("{:U('Navigate/cats',array('module'=>$module,''))}",{title: '请选择内容栏目',id:'cats',width:350,height: 420,lock: true});
+    });
+    })
+
+
+    function changeCat(module,title){
+        $('#category_id').val(module);
+        $('#changeCat').html(title);
+        art.dialog({id:'cats'}).close();
+    }
+
+</script>
+</head>
+<body>
+
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+        <a>
+            <em>简历修改</em>
+        </a>
+    </div>
+</div>
+
+<form action="{:U('edit')}" method="post">
+
+    <div class="pad_lr_10">
+        <div class="col_tab">
+            <ul class="J_tabs tab_but cu_li">
+                <li class="current">基本信息</li>
+            </ul>
+            <div class="J_panes">
+                <div class="content_list pad_10">
+                    <table width="100%" cellspacing="0" class="table_form" >
+
+                        <tr>
+                            <th><font color="red">*</font> 姓名 :</th>
+                            <td>
+                                <input type="text" name="name" class="input-text" size="20" value="{$info['name']}">
+                            </td>
+                            <th><font color="red">*</font> 出生日期 :</th>
+                            <td>
+                                <input type="text" name="birthday" class="input-text" size="20" value="{$info['birthday']}">
+                                <span style="color:#ccc;">格式：1989-09-15</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th><font color="red">*</font> 性别 :</th>
+                            <td>
+                                <label><input type="radio" name="sex" value="1" <?php echo $info['sex']==1?"checked='checked'":''?>/>男</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label><input type="radio" name="sex" value="0" <?php echo $info['sex']==0?"checked='checked'":''?>/>女</label>
+                            </td>
+                            <th><font color="red">*</font>民族 :</th>
+                            <td>
+                                <input type="text" name="nation" class="input-text" size="20" value="{$info['nation']}">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th><font color="red">*</font> 学历 :</th>
+                            <td>
+                                <input type="text" name="xueli" class="input-text" size="20" value="{$info['xueli']}">
+                            </td>
+                            <th><font color="red">*</font> 籍贯 :</th>
+                            <td>
+                                <input type="text" name="native" class="input-text" size="20" value="{$info['native']}">
+                            </td>
+
+                        <tr>
+                            <th><font color="red">*</font> 专业 :</th>
+                            <td>
+                                <input type="text" name="specialty" class="input-text" size="20" value="{$info['specialty']}">
+                            </td>
+                            <th><font color="red">*</font> 毕业院校 :</th>
+                            <td>
+                                <input type="text" name="school" class="input-text" size="20" value="{$info['school']}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><font color="red">*</font> Tel :</th>
+                            <td>
+                                <input type="text" name="tel" class="input-text" size="20" value="{$info['tel']}">
+                                <span style="color:#ccc;">联系电话</span>
+                            </td>
+                            <th><font color="red">*</font> E-mail :</th>
+                            <td>
+                                <input type="text" name="email" class="input-text" size="20" value="{$info['email']}">
+                                <span style="color:#ccc;">邮箱格式</span>
+                            </td>
+                        </tr>
+
+                        <tr >
+                            <th><font color="red">*</font> 教育背景 :</th>
+                            <td colspan="4">
+                                <input type="text" name="education" class="input-text" size="100" value="{$info['education']}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><font color="red">*</font> 求职意向 :</th>
+                            <td colspan="4">
+                                <input type="text" name="job" class="input-text" size="100" value="{$info['job']}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><font color="red">*</font>开发工具 :</th>
+                            <td colspan="4">
+                                <input type="text" name="tools" class="input-text" size="100" value="{$info['tools']}">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><font color="red">*</font> 技术鉴定 :</th>
+                            <td colspan="4">
+                                <input type="text" name="technical" class="input-text" size="100" value="{$info['technical']}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><font color="red">*</font> 兴趣爱好 :</th>
+                            <td colspan="4">
+                                <input type="text" name="interest" class="input-text" size="100" value="{$info['interest']}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><font color="red">*</font> 专业技能 :</th>
+                            <td colspan="4">
+                                <textarea  name="technical_skill" >{$info['technical_skill']}</textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th><font color="red">*</font> 工作经历 :</th>
+                            <td colspan="4">
+                                <textarea  name="work_experience" >{$info['work_experience']}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><font color="red">*</font>自我评价 :</th>
+                            <td colspan="4">
+                                <textarea name='self_assessment' style="width: 890px; height: 65px;" title="留空则自动截取内容前140个字符">{$info['self_assessment']}</textarea>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="mt10">
+                <input type="submit" value="确定" id="dosubmit" name="dosubmit" class="smt mr10" style="margin: 0 0 10px 100px;">
+                <br />
+                <br />
+                <br />
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+
+<include file="Public:footer" />

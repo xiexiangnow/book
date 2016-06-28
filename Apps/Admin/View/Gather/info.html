@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>内容</title>
+    <style type="text/css">
+        .sgn_1 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left 0px;
+        }
+        .sgn_2 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left -13px;
+        }
+        .sgn_3 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left -26px;
+        }
+        .sgn_4 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left -39px;
+        }
+        .sgn_5 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left -52px;
+        }
+        .sgn_6 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left -65px;
+        }
+        .sgn_7 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left -78px;
+        }
+        .sgn_8 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left -91px;
+        }
+        .sgn_9 {
+            background: rgba(0, 0, 0, 0) url("__IMG__/bg_bar.gif") repeat-x scroll left -104px;
+        }
+
+        .sgnTie{
+            height: 11px;
+        }
+        .bar {
+            background: #f0f0f0 none repeat scroll 0 0;
+            float: right;
+            height: 11px;
+            margin-top: 2px;
+            width: 132px;
+        }
+    </style>
+
+
+
+</head>
+<body style="background-color:#e6e6e6;">
+
+
+ 
+<div style="text-align:left;width:80%;margin:50px auto;">
+            
+            <h1>{$base.title}</h1>
+            <p>时间：{$base.time|date="Y-m-d H:i:s",###}&nbsp;&nbsp;&nbsp;&nbsp;浏览量：{$base.view}&nbsp;&nbsp;&nbsp;&nbsp;<notempty name="base['writer']">作者：{$base.writer}</notempty></p>
+           内容摘要： {$base['description']}
+
+
+<div id="content">
+    <div class="mygallery clearfix">
+	<div class="tn3 album"><br/>
+
+
+
+	    <volist name="info" id="vo" key="k">
+<?php
+
+$num = ($vo['count']/$count)*100;
+?>
+		<li>
+		   {$vo['content']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="bar">
+<em class="sgn_{$k} sgnTie" style="width: {$num}%; display: inline-block;"></em>
+  {$vo['count']}票
+            </span>
+		</li>
+
+		</volist>
+
+
+
+	</div>
+    </div>
+</div>
+			
+				
+
+				
+
+</div>
+
+
+    
+<body>
+</html>

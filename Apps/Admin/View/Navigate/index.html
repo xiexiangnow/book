@@ -1,0 +1,88 @@
+<include file="Public:header" />
+<script src="__PLUGIN__/jquery-1.9.min.js"></script>
+<script type="text/javascript">
+/*排序*/
+function setSort() {
+	$('#myform').attr('action', "{:U('sort')}" );	
+	$('#myform').submit();	
+}
+</script>
+</head>
+<body>	
+
+
+<div class="subnav">
+    <div class="content_menu ib_a blue line_x">
+    	     <volist name="nav_menu" id="vo">
+    	         <a href="{$vo['url']}" <eq name="navk" value="$vo['navk']">class="on"<else/>class=""</eq>><em>{$vo['title']}</em></a>
+    	         <span>|</span>
+    	     </volist> 
+    </div>
+</div>
+
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+        <form action="" id="myform">
+        <table width="100%" cellspacing="0">
+        
+            <thead>
+	            <tr>                        
+					<th>编号</th>
+					<th align="left">栏目名称</th>					
+					<th align="left">栏目类型</th>
+					<th align="left">所属模型</th>					
+					<th>是否导航显示</th>
+					<th>排序</th>
+					<th>操作</th>
+	            </tr>
+            </thead>
+            <?php
+               $color = array(2=>'blue','red');
+            ?>
+    	    <tbody>
+				<volist name="list" id="vo" key="k">
+					<tr>
+						<td align="center">{$vo['id']}</td>
+						<td>
+						    <?php
+						       $level = $vo['level']-1;
+                               if($level){ 
+						          echo str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$level).($list[$k]['level']==$vo['level']?"├─":"└─");
+                               } 
+						    ?>
+						    {$vo['title']}
+						</td>						
+						<td>
+						    <font color="{$color[$vo['type']]}">{$type_ary[$vo['type']]}<font>
+						</td>
+						<td><eq name="vo['type']" value="1">{$doc_type[$vo['module']]}</eq></td>						
+						<td align="center">
+						  <if condition="$vo['is_nav'] eq 1">
+						      <img data-tdtype="toggle" data-field="status" data-id="1" data-value="1" src="__IMG__/toggle_enabled.gif" />
+						  <else/>
+						      <img data-tdtype="toggle" data-field="status" data-id="1" data-value="1" src="__IMG__/toggle_disabled.gif" />
+						  </if>				
+						</td>
+						<td align="center"><input type="text" class="input-text" style="text-align:center;" name="sort[{$vo['id']}]" value="{$vo['sort']}" size="8"></td>
+						<td align="center">
+							<a href="{:U('edit',array('id'=>$vo['id']))}">修改</a>					|
+							<a href="{:U('del',array('id'=>$vo['id']))}" onClick="javascript:return confirm('确认删除该栏目及子栏目吗?');">删除</a>
+						</td>
+					</tr>
+				</volist>
+                                             
+            </tbody>
+        </table>
+        </form>
+    </div>
+       
+  
+     
+    <div class="btn_wrap_fixed">
+        <input type="button" class="btn"onclick="setSort();" value="排序" />        
+    </div>
+     
+</div>
+
+
+<include file="Public:footer" />

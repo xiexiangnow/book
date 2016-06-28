@@ -1,0 +1,66 @@
+<include file="./Apps/Admin/View/Public/header.html" />
+</head>
+<body>
+
+<div class="pad_lr_10">
+	<div class="col_tab" style="margin-top:20px;">
+	
+		<ul class="J_tabs tab_but cu_li">			
+			<volist name="type" id="group">			
+	            <li <eq name="id" value="$key">class="current"</eq>><a href="{:U('?id='.$key)}">{$group}配置</a></li>
+			</volist>  			
+		</ul>
+		
+		<div class="J_panes">
+			<div class="content_list pad_10">
+			
+			    <form action="{:U('save')}" method="post"> 
+				<table width="100%" cellspacing="0" class="table_form">
+					
+		    	<volist name="list" id="config">           
+		
+			        <tr>
+			          <th>{$config.title}：</th>
+			          <td>	     	          
+							<switch name="config.type">
+							<case value="0|1">
+							<input type="text" name="config[{$config.name}]" value="{$config.value}" class="input-text" size="50" >
+							</case>
+							<case value="2|3">					
+								<p><textarea name="config[{$config.name}]" rows="7" cols="70" class="input_textarea">{$config.value}</textarea></p>					
+							</case>
+							<case value="4">
+							<select name="config[{$config.name}]" class='select' style="width:160px;">
+								<volist name=":parse_config_attr($config['extra'])" id="vo">
+									<option value="{$key}" <eq name="config.value" value="$key">selected</eq>>{$vo}</option>
+								</volist>
+							</select>
+							</case>					
+							</switch>	          	            	           
+			            <span class="gray ml10">{$config.remark}</span>
+			          </td>
+			        </tr>
+		
+				</volist>  	
+				
+				<tr>
+				   <th>&nbsp;</th>
+				   <td>
+				   	  <input type="submit" value="确定" id="dosubmit" name="dosubmit" class="smt mr10">
+				      <input class="smt" type="reset" name="Input" value="重置" />
+				   </td>
+				</tr>				
+					
+				</table>
+				</form>
+				
+			</div>
+        </div>
+
+	</div>
+</div>
+
+  
+
+
+<include file="./Apps/Admin/View/Public/footer.html" />

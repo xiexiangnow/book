@@ -1,0 +1,122 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/my97/wdatepicker.js"></script>
+<script type="text/javascript" src="__PLUGIN__/layer/layer1.9/layer.js"></script>
+<script type="text/javascript">
+$(function(){
+	
+	$('.edit').click(function(){	
+		var id=$(this).attr('data');
+		if(!id)return false;
+		$("#filename").val($(this).attr('data_name'));
+		$("#file_id").val(id);		
+		layer.open({
+		    type: 1,
+		    title:'修改名称',
+		    area : ['300px','120px'],
+		    content: $('#editor')
+		});			
+		$("#filename").select();
+	})	
+	
+	$('#editbtn').click(function(){
+		var name = $("#filename").val();
+		var id = $("#file_id").val();		
+		$.getJSON("{:U('attachment/edit_name')}",{id:id,name:name},function(res){
+			if(res.status){
+				location.reload();
+			}
+		})
+	})
+})
+</script>
+</head>
+<body>
+	<div id="editor" style="display:none;text-align:center;text-valign:middle;">	
+	<br/>    
+	    <input type="hidden" class="input-text" id="file_id" value="">
+	    <input type="text" class="input-text" size="30" id="filename" name="name" value="">
+	    <input type="button" id="editbtn" class="btn" value="修改">
+	</div>
+
+	<div class="subnav">
+	    <h1 class="title_2 line_x">附件管理</h1>
+	</div>
+
+	<div class="pad_lr_10">
+
+		<form action="{:U('index')}" method="get">
+			<table width="100%" cellspacing="0" class="search_form">
+				<tbody>
+					<tr>
+						<td>
+							<div class="explain_col">
+								文件名
+								<input name="keywords" type="text" class="input-text" size="30" value="{$keywords}">
+								添加时间
+								<input name="starttime" type="text" size="15" id="d4311" onfocus="WdatePicker({maxDate:'#F{ $dp.$D(\'d4312\')}'})" class="input-text Wdate" value="{$starttime}" readonly>
+								至
+								<input name="endtime" type="text" size="15" id="d4312" onfocus="WdatePicker({minDate:'#F{ $dp.$D(\'d4311\')}'})" class="input-text Wdate" value="{$endtime}" readonly>
+								分类
+								<select name="type">
+									<option value="">请选择</option>
+                                    <volist name="typeary" id="vo">
+                                      <option value="{$key}" <if condition="($type neq '') AND ($key eq $type)">selected</if>>{$vo}</option>
+                                    </volist>
+								</select>								
+								<input type="submit" name="search" class="btn" value="搜索" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+		<div class="J_tablelist table_list">
+			<form action="{:U('Doc/index')}" id="myform">				
+				<table width="100%" cellspacing="0">
+
+					<thead>
+						<tr>													
+							<th align="left">文件名</th>
+							<th>分类</th>
+							<th>添加时间</th>							
+							<th>操作</th>
+						</tr>
+					</thead>
+
+
+					<tbody>
+                        
+						<volist name="list" id="vo">
+						<tr>													
+							<td>							  
+								<a href="{:U('Attachment/info',array('id'=>$vo['id']))}" target="_blank" title="点击查看详情">{$vo['filename']}</a>						      	
+							</td>
+							<td align="center">{$typeary[$vo['cat']]}</td>
+							<td align="center">{$vo['time']|date="Y-m-d H:i",###}</td>
+							<td align="center">
+								<a href="javascript:;" data="{$vo['id']}" data_name="{$vo['filename']}" class="edit">修改</a>
+								|
+								<a href="javascript:;" class="J_confirmurl" data-acttype="ajax"  data-uri="{:U('doc/state',array('id'=>$vo['id'],'dis'=>-1))}" data-msg="您确定要删除吗？" title="点击删除">删除</a>
+							</td>
+						</tr>
+						</volist>
+						
+						<empty name="list">
+						<tr>
+							<td colspan="4" align="center">暂无数据 !</td>							
+						</tr>						   
+						</empty>
+
+					</tbody>
+				</table>
+				</form>
+		</div>
+
+		<div class="btn_wrap_fixed">			
+			<div id="pages">{$page}</div>
+		</div>
+
+
+<include file="Public:footer" />

@@ -1,0 +1,154 @@
+<include file = "Public:header"/>
+<include file = "Public:nav_list"/>
+<include file = "Public:top_nav"/>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">菜单 列表</h3>
+
+                <div class="panel-options">
+                    <a href="#">
+                        <i class="linecons-cog"></i>
+                    </a>
+
+                    <a href="#" data-toggle="panel">
+                        <span class="collapse-icon">–</span>
+                        <span class="expand-icon">+</span>
+                    </a>
+
+                    <a href="#" data-toggle="reload">
+                        <i class="fa-rotate-right"></i>
+                    </a>
+
+                    <a href="#" data-toggle="remove">
+                        ×
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body panel-border">
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <!-- Table Model 2 -->
+                        <form action="" id="menu_form">
+                        <table class="table table-model-2 table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>名称 &nbsp;<if condition="$top['id'] gt 1"><a href="menuList?pid={$top['pid']}&nav=19"
+                                                                      title="返回到上级目录">(返回上级 ▲ {$top['title']})</a></if></th>
+                                <th>路径</th>
+                                <th>图标</th>
+                                <th>等级</th>
+                                <th>状态</th>
+                                <th>排序</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <if condition="$menu_list neq null">
+                            <volist name="menu_list" id="v">
+                            <tr>
+                                <td>{$v['id']}</td>
+                                <td><a href="menuList?pid={$v['id']}&nav=19" title="点击查看下级目录" style="color:#40bbea" >{$v['title']}</a></td>
+                                <td>{$v['path']}</td>
+                                <td><i class="{$v['icon']}"></i> </td>
+                                <td>{$v['level']}</td>
+                                <td><if condition="$v['is_show'] eq 1"><span style="color:green;">显示</span><else/><span style="color:red;">隐藏</span></if></td>
+                                <td><input type="text" name="sort[{$v['id']}]" value="{$v['sort']}" style="width: 60px;"/></td>
+                                <td><a href="addMenu?id={$v['id']}&nav=18" class="btn btn-secondary btn-sm btn-icon icon-left">
+                                    修改
+                                </a>
+                                    <a href="javascript:void(0)" class="btn btn-danger btn-sm btn-icon icon-left" onclick="delete_menu_state({$v['id']})">
+                                    删除
+                                </a></td>
+                            </tr>
+                            </volist>
+                            <else/>
+                                <td colspan="8"> 没有数据</td>
+
+                            </if>
+
+                            </tbody>
+                        </table>
+                            </form>
+                        <a class="btn btn-primary" onclick="setSort()">批量排序</a>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="alert alert-default">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <span aria-hidden="true">×</span>
+                                        <span class="sr-only">Close</span>
+                                    </button>
+
+                                    <strong>提示</strong> 先在排序框输入正整数，越大越靠前，再点击“批量排序”按钮进行操作.
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    function delete_menu_state(id) {
+        if (confirm('确认删除吗?')) {
+            $.post('delete_menu', {id: id}, function (e) {
+                show_loading_bar({
+                    delay: .5,
+                    pct: 100,
+                    finish: function () {
+
+                        // Redirect after successful login page (when progress bar reaches 100%)
+                        if (e.state == 1) {
+                            toastr.success(e.msg, "操作状态!");
+
+                            window.setTimeout('window.location="{:U('Menu/menuList')}"', 1000);
+                        }
+                        else {
+                            toastr.error(e.msg, "操作状态!");
+
+                        }
+                    }
+                });
+
+            }, 'json');
+        }
+    }
+
+    //批量排序
+    function setSort(){
+        $.post('sort',$('#menu_form').serialize(),function(e){
+            show_loading_bar({
+                delay: .5,
+                pct: 100,
+                finish: function () {
+                    // Redirect after successful login page (when progress bar reaches 100%)
+                    if (e.state == 1) {
+                        toastr.success(e.msg, "操作状态!");
+
+                        window.setTimeout('window.location="{:U('Menu/menuList')}"', 1000);
+                    }
+                    else {
+                        toastr.error(e.msg, "操作状态!");
+
+                    }
+                }
+            });
+        })
+    }
+</script>
+
+
+<include file="Public:footer"/>

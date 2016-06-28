@@ -1,0 +1,81 @@
+<include file="Public:header" />
+</head>
+<body>
+
+
+	<div class="subnav">
+		<h1 class="title_2 line_x">
+			<notempty name="info">回复|修改<else />添加</notempty>留言
+		</h1>
+	</div>
+
+	<div class="pad_lr_10">
+		<form action="{:U('edit')}" method="post">
+			<input type="hidden" name="id" value="{$info['id']}">
+			<table width="100%" cellspacing="0" class="table_form">
+				<tbody>
+					<tr>
+						<th>
+							标题：
+						</th>
+						<td>
+							<input name="title" type="text" class="input-text" size="50" value="{$info['title']}">
+							<span style="color: red;"></span>
+						</td>
+					</tr>
+					<tr>
+						<th>留言者姓名：</th>
+						<td>
+							<input name="user_name" type="text" class="input-text" size="50" value="{$info['user_name']}" />
+						</td>
+					</tr>
+					<tr>
+						<th>联系电话：</th>
+						<td>
+							<input name="tel" type="text" class="input-text" value="{$info['tel']}" size="50">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							留言内容<font color="red">*</font>：
+						</th>
+						<td>
+							<textarea name="content" rows="5" cols="100">{$info['content']}</textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<th>回复留言：</th>
+						<td>
+							<textarea id="content" name="replycontent" rows="5" cols="100">{$info['replycontent']}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<th>前台是否显示：</th>
+						<td>
+						   <notempty name="info">
+							  <label><input name="state" type="radio" class="input-text" value="1" <eq name="info['state']" value="1">checked="checked"</eq>> 显示</label>&nbsp;&nbsp;
+							  <label><input name="state" type="radio" class="input-text" value="0" <eq name="info['state']" value="0">checked="checked"</eq>> 隐藏</label>
+							<else/>
+							  <label><input name="state" type="radio" class="input-text" value="1" checked="checked"> 显示</label>&nbsp;&nbsp;
+							  <label><input name="state" type="radio" class="input-text" value="0"> 隐藏</label>							
+							</notempty>
+						</td>
+					</tr>					
+
+					<tr>
+						<th width="120">&nbsp;</th>
+						<td valign="bottom">
+							<input class="smt  mr10" type="submit" name="submit" value="提交" />
+							&nbsp;&nbsp;
+							<input class="smt  mr10" type="reset" name="submit" value="重置" />
+							&nbsp;&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+
+	<include file="Public:footer" />

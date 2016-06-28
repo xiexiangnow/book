@@ -1,0 +1,51 @@
+<include file="./Apps/Admin/View/Public/header.html" />
+</head>
+<body>
+
+	<table width="98%" border="0" cellpadding="4" cellspacing="1" class="table">
+		
+      <tr class="table_title">
+		  <td colspan="2">消息详情</td>
+	  </tr>    
+          
+      <tr class="ji">
+        <td width="5%">标题</td>
+        <td><strong>{$info['title']}</strong></td>
+      </tr>	
+      
+      <tr class="ji">
+        <td width="10%">发布时间</td>
+        <td>{:date('Y-m-d H:i',$info['time'])}</td>
+      </tr>	    
+      
+      <tr class="ji">
+        <td width="10%">接受者</td>
+        <td>           
+           <?php
+              if(1==$info['type']){
+                echo '全部会员';
+              }else{
+                $uid_ary = explode(',',$info['uids']);
+                if($uid_ary){
+                  foreach($uid_ary as $value){
+                    echo get_account($value)."&nbsp;&nbsp;&nbsp;&nbsp;";
+                  }
+                }
+              }
+           ?>
+        </td>
+      </tr>	  
+      
+      <tr class="ji">
+        <td width="10%">阅读情况</td>
+        <td>共 <strong>{$info['num']}</strong> 人接受，已有 <strong>{$info['num_read']}</strong> 人阅读</td>
+      </tr>	               	
+
+      <tr class="ji">
+        <td width="10%">内容</td>
+        <td style="font-size:14px">{$info['content']}</td>
+      </tr>	    
+		
+	</table>
+
+<include file="./Apps/Admin/View/Public/footer.html" />

@@ -1,0 +1,87 @@
+<include file="Public:header" />
+</head>
+<body>	
+
+<div class="subnav">
+    <h1 class="title_2 line_x">数据还原</h1>
+</div>
+
+
+
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list">
+    
+        <table width="100%" cellspacing="0">
+        
+            <thead>
+            <tr>                
+                    <th>备份名称</th>
+                    <th>卷数</th>
+                    <th>压缩</th>
+                    <th>数据大小</th>
+                    <th>备份时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+            </tr>
+            </thead>
+            
+    	    <tbody>
+    	    
+                <volist name="list" id="data">
+                    <tr>
+                        <td align="center">{$data.time|date='Ymd-His',###}</td>
+                        <td align="center">{$data.part}</td>
+                        <td align="center">{$data.compress}</td>
+                        <td align="center">{$data.size|format_bytes}</td>
+                        <td align="center">{$key}</td>
+                        <td align="center">-</td>
+                        <td class="action" align="center">
+                            <a class="db-import" href="{:U('import?time='.$data['time'])}" onclick="javascript:return confirm('是否还原为该备份数据？');">还原</a>&nbsp;
+                            <a href="{:U('del?time='.$data['time'])}" onclick="javascript:return confirm('是否删除备份数据？');">删除</a>
+                        </td>
+                    </tr>
+                </volist>
+                                             
+            </tbody>
+        </table>
+    </div>
+    
+    
+</div>
+
+
+<include file="Public:footer" />
+<script src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">    
+        $(".db-import").click(function(){
+            var self = this, status = ".";
+            $.get(self.href, success, "json");
+            window.onbeforeunload = function(){ return "正在还原数据库，请不要关闭！" }
+            return false;
+        
+            function success(data){
+                if(data.status){
+                    if(data.gz){
+                        data.info += status;
+                        if(status.length === 5){
+                            status = ".";
+                        } else {
+                            status += ".";
+                        }
+                    }
+                    $(self).parent().prev().text(data.info);
+                    if(data.part){
+                        $.get(self.href, 
+                            {"part" : data.part, "start" : data.start}, 
+                            success, 
+                            "json"
+                        );
+                    }  else {
+                        window.onbeforeunload = function(){ return null; }
+                    }
+                } else {
+                    updateAlert(data.info,'alert-error');
+                }
+            }
+        });    
+</script>

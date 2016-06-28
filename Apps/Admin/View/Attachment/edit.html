@@ -1,0 +1,207 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.4.2-min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/uploadify/jquery.uploadify-3.1.js"></script>
+<script type="text/javascript" src="__JS__/upload.js"></script>
+<link href="__PLUGIN__/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<style>
+.uploadify-queue-item {
+	background-color: #f5f5f5;
+	border-radius: 3px;
+	float: left;
+	font: 11px Verdana, Geneva, sans-serif;
+	height: 112px;
+	margin: 5px;
+	margin: 5px 5px 5px;
+	padding: 10px;
+	position: relative;
+	width: 120px;
+}
+
+.uploadify-progress {
+	background-color: #e5e5e5;
+	bottom: 0;
+	left: 0;
+	margin-top: 40px;
+	position: absolute;
+	width: 100%;
+}
+
+a {
+	outline: none;
+}
+</style>
+<script type="text/javascript">
+        var img_id_upload=new Array();//初始化数组，存储已经上传的图片名
+        var i=0;//初始化数组下标
+        var img='';
+        var face='';
+        
+        $(function() {
+           $('#file_upload').uploadify({
+              	'auto'     : false,//关闭自动上传            	
+            	'removeCompleted':false, //上传后进度条不移除
+                'swf'      : '__PLUGIN__/uploadify/uploadify.swf',
+                'uploader' : "{:U('Attachment/edit',array('module'=>$type))}",                    
+                'method'   : 'post',
+        		'buttonText' : '选择文件',
+        		<if condition="$num gt 1">
+                'multi'    : true,
+                </if>
+                'width':'75', 
+                'height':'24', 	
+                "queueID": "pic_list", 	
+                'uploadLimit' : {$num},                
+                'fileTypeExts' : "{$extstr}",
+                'fileSizeLimit' : "{$size*1024}KB",
+                'onSelect':function(){
+                    var data = $('#divStatus');
+                    var len = parseInt(data.attr('data'))+1;
+                    data.attr('data',len);
+                    data.html("选择了 " + len + " 个文件");
+                },
+                'onUploadSuccess' : function(file, data, response) {  
+                	<if condition="$type eq 0">
+                      img = '<img style="width:120px;max-height:100px" src="'+data+'" data-name="'+file.name+'">';
+                      <elseif condition="$type eq 1"/>
+                      img = '<img style="width:120px;max-height:100px" src="__IMG__/ext/rar.png" data-name="'+data+'">';
+                      <else/>
+                	  img = '<img style="width:120px;max-height:100px" src="__IMG__/ext/flv.png" data-name="'+data+'">';
+                	</if>
+                      $('#' + file.id).find('.data').after(img);
+                      $('#' + file.id).find('.cancel').html("<a href='javascript:del(\""+file.id+"\",\""+data+"\");'>x</a>");              
+                      $('#' + file.id).find('.data').html('上传成功');                                       
+                },
+                'onQueueComplete' : function() {                     
+                	$('#divStatus').html('所有文件上传成功');                    
+                }  
+            });
+           
+           
+           $('#dosubmit').click(function(){
+        	   
+        	   //var ss = $('#div_selected').val();
+        	   var formName = "{$formName}" ;
+        	   var textareaid = "{$textareaid}" ;
+        	   var funName = "{$funcName}" ;
+        	   var num = 1;
+        	   var type = {$type};
+        	   var str = '';
+        	           	   
+        	   if(0==type){
+        		 $('#pic_list').find('img').each(function(i){
+      		    	 var ids = parseInt(Math.random() * 10000 + 10*i);      		    	 
+                     str = '<div style="padding:1px" id="image'+ids+'"><img src="'+$(this).attr('src')+'" width="100px"><input type="hidden" name="'+formName+'" value="'+$(this).attr('src')+'">&nbsp;<a href="javascript:remove_div(\'image'+ids+'\')">&nbsp;移除</a></div>' ;        		    		  		    	         		    	
+    		     });    		       
+        	   }else{
+        		 var icon = 1==type?'__IMG__/ext/rar.png':'__IMG__/ext/flv.png' ;
+          		 $('#pic_list').find('img').each(function(i){
+      		    	 var ids = parseInt(Math.random() * 10000 + 10*i);      		    	 
+                     str = '<div style="padding:1px" id="image'+ids+'"><img src="'+icon+'" width="100px"><input type="hidden" name="'+formName+'" value="'+$(this).attr('data-name')+'">&nbsp;<a href="javascript:remove_div(\'image'+ids+'\')">&nbsp;移除</a></div>' ;        		    		  		    	         		    	
+    		     });    		               		   
+        	   }
+        	   
+        	   parent.$('#'+textareaid).html(str);
+        	   parent.layer.closeAll();
+           })           
+           
+        });
+
+        //删除图片
+        function del(id,src){
+        	var delay=1;
+ 	        $("#"+id).find('.data').removeClass('data').html('删除成功');
+	        $("#"+id).find('.uploadify-progress-bar').remove();
+	        $("#"+id).delay(1000 + 100 * delay).fadeOut(500, function() {
+		    $("#"+id).remove();
+	       });	        	           
+        } 
+        
+</script>
+</head>
+<body>
+
+
+
+
+
+	<div class="pad_lr_10">
+		<div class="col_tab">
+<br/>
+			<div id="div_swf_1" class="J_panes">
+				<div class="content_list pad_10">
+				
+				<form id="form1" action="" method="post" enctype="multipart/form-data">	
+					<input type="hidden" name="num" id="num" value="{$num}">
+					<input type="hidden" name="textareaid" id="textareaid" value="{$textareaid}">							
+					<table width="100%" cellspacing="0" >			
+						<tr>
+							<td>
+									<p>
+										<font color="red">注意：</font>
+										只能上传{$ext} 格式的文件，大小不能超过<font color="red">{$size}</font> MB，最多上传<font color="red">{$num}</font>个附件
+									</p>
+									<div id="divFileProgressContainer" style="float: left;">
+										<span id="file_upload"></span>
+										<div style="float: left;">
+											<input type="button" value="开始上传"
+												onclick="javascript:$('#file_upload').uploadify('settings', 'formData', {'typeCode':document.getElementById('id_file').value});$('#file_upload').uploadify('upload','*')"
+												style="position: absolute; margin-left: 10px; font-size: 8pt; height: 29px;" />
+										</div>
+										<span id="divStatus" data="0"
+											style="color: red; margin-left: 100px; margin-top: 8px; position: absolute;"></span>
+										<input type="hidden" value="" name="tmpdir" id="id_file">
+									</div>
+
+									<div id="pic_list" style="float: left; width: 100%;"></div>				
+							</td>
+						</tr>
+					</table>
+					</form>
+					
+				</div>
+			</div>
+					
+				
+           <div class="mt10">
+				<input type="submit" style="margin: 0 0 10px 100px;" class="smt mr10" name="dosubmit" id="dosubmit" value="确定">
+				<br>
+				<br>
+				<br>
+			</div>			
+			
+			<input type="hidden" id="div_selected" value="div_swf_1">
+			
+		</div>
+	</div>
+
+<include file="Public:footer" />
+
+<script type="text/javascript">
+
+function SwapTab(name,cls_show,cls_hide,cnt,cur) {
+    for(i=1;i<=cnt;i++){
+		if(i==cur){
+			 $('#div_'+name+'_'+i).show();
+			 $('#tab_'+name+'_'+i).addClass(cls_show);
+			 $('#tab_'+name+'_'+i).removeClass(cls_hide);
+			 $('#div_selected').val('div_'+name+'_'+i);
+		}else{
+			 $('#div_'+name+'_'+i).hide();
+			 $('#tab_'+name+'_'+i).removeClass(cls_show);
+			 $('#tab_'+name+'_'+i).addClass(cls_hide);
+		}
+	}
+}
+
+function addonlinefile(obj) {
+	var strs = $(obj).val() ? '|'+ $(obj).val() :'';
+	$('#att-status').html(strs);
+}
+
+
+function set_iframe(id,src){
+	$("#"+id).attr("src",src); 
+}
+
+
+</script>

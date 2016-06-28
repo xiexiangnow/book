@@ -1,0 +1,134 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/my97/wdatepicker.js"></script>
+<script type="text/javascript">
+/*设置状态*/
+function setStatus(id, status) {
+	if(2==status){
+		if(!confirm('确定执行删除操作吗?')){
+			return false;
+		}
+	}
+	
+	if (!id || id.length == 0) {
+		return alert("请选择一条记录");	
+	}
+	
+	2==status?$('#myform').attr('action', "{:U('del')}"):$('#myform').attr('action', "{:U('state')}" );
+	
+	$('#state').val(status);
+	$('#myform').submit();	
+}	
+	/*排序*/
+	function setSort() {
+		$('#myform').attr('action', "{:U('Message/sort')}");
+		$('#myform').submit();
+	}
+</script>
+</head>
+<body>
+
+	<div class="subnav">
+	      <h1 class="title_2 line_x">留言列表</h1>
+	</div>
+
+	<div class="pad_lr_10">
+
+		<form action="{:U('index')}" method="get">
+		<input type="hidden" name="reply" value="{$reply}">
+			<table width="100%" cellspacing="0" class="search_form">
+				<tbody>
+					<tr>
+						<td>
+							<div class="explain_col">
+								留言时间
+								<input name="starttime" type="text" size="13" id="d4311" onfocus="WdatePicker({maxDate:'#F{ $dp.$D(\'d4312\')}'})" class="input-text Wdate" value="{$starttime}" readonly>
+								至
+								<input name="endtime" type="text" size="13" id="d4312" onfocus="WdatePicker({minDate:'#F{ $dp.$D(\'d4311\')}'})" class="input-text Wdate" value="{$endtime}" readonly>								
+								<input type="submit" name="search" class="btn" value="搜索" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+	<div class="col_tab" style="margin-top:5px;">
+		<ul class="J_tabs tab_but cu_li">			
+			<li <eq name="reply" value="1">class="current"</eq>><a href="{:U('index',array('reply'=>1))}">未回复</a></li>
+			<li <eq name="reply" value="2">class="current"</eq>><a href="{:U('index',array('reply'=>2))}">已回复</a></li>
+			<li <eq name="reply" value="0">class="current"</eq>><a href="{:U('index',array('reply'=>0))}">全部</a></li>  			
+		</ul>
+
+		<div class="J_tablelist table_list">
+			<form action="{:U('Doc/index')}"  id="myform">
+				<input type="hidden" name="state" id="state" value="1">
+				<table width="100%" cellspacing="0">
+
+					<thead>
+						<tr>
+							<th width="40"><input type="checkbox" name="checkall" class="J_checkall"></th>													
+							<th align="left">标题</th>
+							<th align="left">留言姓名</th>
+							<th>留言内容</th>
+							<th>留言时间</th>
+							<th>电话</th>			
+							<th>状态</th>
+							<th>排序</th>
+							<th>操作</th>
+						</tr>
+
+					</thead>
+					<tbody>
+
+						<volist name="list" id="vo">
+						<tr>
+							<td align="center"><input type="checkbox" name='id[]' class="J_checkitem" value="{$vo['id']}"></td>														
+							<td>
+								<a href="{:U('Message/edit')}?id={$vo.id}"  title="点击阅读内容">{$vo['title']}</a>
+							</td>
+							<td>{$vo['user_name']}</td>
+						    <td align="left"><?php echo subs($vo['content'],15) ;?></td>
+							<td align="center">{$vo['time']|date='Y-m-d H:i:s',###}</td>
+							<td align="center">{$vo['tel']}</td>
+					        <td align="center"><if condition="$vo['isreply'] eq 1"><span style="color:green;">已回复</span><else/><span style="color:#FFA042;">未回复</span></if></td>
+							<td align="center">
+                               <input type="text" style="text-align: center;" class="input-text" size="8" name="sort[{$vo['id']}]" value="{$vo['sort']}">
+                            </td>
+							<td align="center">
+								<a href="{:U('Message/edit',array('id'=>$vo['id']))}" title="点击处理">处理</a> | 
+								<if condition="$vo['state'] eq 1"> 
+								  <a href="{:U('Message/state',array('id'=>$vo['id'],'state'=>0))}" title="点击隐藏">显示</a>
+								<else/> 
+								  <a href="{:U('Message/state',array('id'=>$vo['id'],'state'=>1))}" data-msg="您确定要显示吗？" title="点击显示"><font color="red">隐藏</font></a> 
+								</if>
+                                | 
+								<a href="{:U('Message/del',array('id'=>$vo['id']))}" onClick="javascript:return confirm('确认删除吗?');" title="点击删除">删除</a>								
+							</td>
+						</tr>	
+						</volist>
+
+					</tbody>
+				</table>
+				</form>
+		</div>
+
+</div>
+
+		<div class="btn_wrap_fixed">
+            <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">全选/取消</label>
+            <input type="button" value="批量显示" class="btn" onclick="setStatus($.checkBoxValue('id[]'), 1)"/>  
+            <input type="button" value="批量隐藏" class="btn" onclick="setStatus($.checkBoxValue('id[]'), 0)"/>
+            <input type="button" value="批量删除" class="btn" onclick="setStatus($.checkBoxValue('id[]'), 2)"/>	         
+			<input type="button" value="排序" class="btn" onclick="setSort()" />
+			<div id="pages">{$page}</div>
+		</div>
+
+
+<include file="Public:footer" />
+<script type="text/javascript" src="__JS__/listTable.js"></script>
+<script>
+$(function(){
+	$('.J_tablelist').listTable();
+});
+</script>		

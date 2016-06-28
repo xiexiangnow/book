@@ -1,0 +1,138 @@
+<include file = "Public:header"/>
+<include file = "Public:nav_list"/>
+<include file = "Public:top_nav"/>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">类型 列表</h3>
+
+                <div class="panel-options">
+                    <a href="#">
+                        <i class="linecons-cog"></i>
+                    </a>
+
+                    <a href="#" data-toggle="panel">
+                        <span class="collapse-icon">–</span>
+                        <span class="expand-icon">+</span>
+                    </a>
+
+                    <a href="#" data-toggle="reload">
+                        <i class="fa-rotate-right"></i>
+                    </a>
+
+                    <a href="#" data-toggle="remove">
+                        ×
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body panel-border">
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <!-- Table Model 2 -->
+                        <form action="" id="menu_form">
+                            <table class="table table-model-2 table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>类型名称</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <if condition="$type_list neq null">
+                                    <volist name="type_list" id="v">
+                                        <tr>
+                                            <td>{$v['id']}</td>
+                                            <td>{$v['name']}</td>
+                                            <td>{:subs($v['remark'],15)}</td>
+                                            <td><a href="addIndex?id={$v['id']}&nav=24" class="btn btn-secondary btn-sm btn-icon icon-left">
+                                                   修改
+                                               </a>
+
+                                                <a href="javascript:void(0)" class="btn btn-danger btn-sm btn-icon icon-left" onclick="delete_typeInfo({$v['id']})">
+                                                    删除
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </volist>
+                                    <else/>
+                                    <td colspan="8"> 没有数据</td>
+
+                                </if>
+
+                                </tbody>
+                            </table>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    function delete_menu_state(id) {
+        if (confirm('确认删除吗?')) {
+            $.post('delete_menu', {id: id}, function (e) {
+                show_loading_bar({
+                    delay: .5,
+                    pct: 100,
+                    finish: function () {
+
+                        // Redirect after successful login page (when progress bar reaches 100%)
+                        if (e.state == 1) {
+                            toastr.success(e.msg, "操作状态!");
+
+                            window.setTimeout('window.location="{:U('Menu/menuList')}"', 1000);
+                        }
+                        else {
+                            toastr.error(e.msg, "操作状态!");
+
+                        }
+                    }
+                });
+
+            }, 'json');
+        }
+    }
+
+    //删除
+    function delete_typeInfo(id){
+        if (confirm('确认删除吗?')) {
+            $.post('delete_typeInfo', {id: id}, function (e) {
+                show_loading_bar({
+                    delay: .5,
+                    pct: 100,
+                    finish: function () {
+
+                        // Redirect after successful login page (when progress bar reaches 100%)
+                        if (e.state == 1) {
+                            toastr.success(e.msg, "操作状态!");
+
+                           // window.setTimeout('window.location=""', 1000);
+                            location.reload(true);
+                        }
+                        else {
+                            toastr.error(e.msg, "操作状态!");
+
+                        }
+                    }
+                });
+
+            }, 'json');
+        }
+    }
+
+</script>
+
+
+<include file="Public:footer"/>

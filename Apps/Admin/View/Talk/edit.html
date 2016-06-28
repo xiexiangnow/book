@@ -1,0 +1,78 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script language="javascript" type="text/javascript" src="__JS__/attachment.js"></script>
+<script src="__PUBLIC__/Index/js/uploadPreview.js"></script>
+</head>
+<body>  
+
+
+<div class="subnav">
+    <h1 class="title_2 line_x">修改说说</h1>
+</div>
+
+<div class="pad_lr_10" >
+<form action="{:U('gai')}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{$talk_info['id']}">
+    <table width="100%" cellspacing="0" class="table_form">
+        <tbody>
+      <tr>
+        <th>说说标题<font color="red">*</font>：</th>
+        <td>
+          <input name="title" type="text"  class="input-text" size="50" value="{$talk_info['title']}">
+          <span class="gray ml10"></span>
+        </td>
+      </tr>
+      
+      <tr>
+        <th>图片<font color="red">*</font>：</td>
+        <td>
+　　　　　　<if condition="$talk_info['imgurl']">
+       　　　 <img src="/Uploads{$talk_info['imgurl']}" width="120" height="60" />
+           <else/>
+                <span style="float:left;color:red;">该说说没有对应图片,点击下面可以添加</span>
+                <ul id="warp">
+                   <li>
+                  <p><input type="file" id="up_img_WU_FILE_0" name="file"/>
+                  <img id="imgShow_WU_FILE_0" width="200" height="80" /></p>
+                  </li>
+                 </ul>
+            </if>
+
+            <if condition="$talk_info['imgurl'] neq null">
+             <ul id="warp">
+               <li>
+              <p><input type="file" id="up_img_WU_FILE_0" name="file"/>
+          <img id="imgShow_WU_FILE_0" width="200" height="80" /><span style="color:red">点击这里可以更换图片</span></p>
+          </li>
+             </ul>
+            </if>
+        </td>
+      </tr> 
+     
+      <tr>
+        <th>内容：</th>
+      	<td><textarea name="content"  cols="70" rows="10">{$talk_info['content']}</textarea></td>
+      </tr>        
+      <tr >
+        <th>是否置顶：</th>
+        <td><input name="top" type="radio" <?php echo $talk_info['top']==1?"checked='checked'":'';?> class="input-text" size="50" value="1" />是&nbsp;&nbsp;&nbsp;&nbsp;
+            <input name="top" type="radio" <?php echo $talk_info['top']==0?"checked='checked'":'';?> class="input-text" size="50" value="0" />否
+        </td>
+      </tr>        
+           
+      <tr>
+        <th width="120">&nbsp;</th>
+                <td valign="bottom">
+          <input class="smt  mr10" type="submit" name="submit" value="提交" />&nbsp;&nbsp;
+          <a class="smt" href="{:U('index')}">返回列表</a>
+        </td>
+      </tr>
+        </tbody>
+    </table>
+    </form>
+</div>
+
+
+<include file="Public:footer" />

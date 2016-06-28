@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>附件管理中心</title>
+<script language="javascript" type="text/javascript" src="__PLUGIN__/jquery-1.9.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script language="javascript" type="text/javascript" src="__JS__/attachment.js"></script>
+</head>
+<body>
+
+
+<fieldset class="blue pad-10">
+    <legend>图片列表</legend>
+    <div class="picList">
+       <input type="hidden" value="" id="thumb" name="info[thumb]">
+       <img width="135" height="113" style="cursor:hand" id="thumb_preview" ondblclick='croppic(this.src,"thumb");' src="/Public/Admin/img/upload-pic.png">
+    </div>
+</fieldset>
+
+<input type="button" value="图片运行》" onclick="javascript:flashupload(0,'图片上传',1,'jpg|jpeg|png|bmp|gif',2,'thumb',thumb_images)">
+
+
+<fieldset class="blue pad-10">
+    <legend>图片列表</legend>
+    <div class="picList" id="piclist"></div>
+</fieldset>
+
+<input type="button" value="图片运行》" onclick="javascript:flashupload(0,'图片上传',5,'jpg|jpeg|png|bmp|gif',2,'piclist',change_images)">
+	  
+
+<fieldset class="blue pad-10">
+    <legend>文件列表</legend>
+    <div class="picList" id="filelist"></div>
+</fieldset>
+	  
+<input type="button" value="文件运行》" onclick="javascript:flashupload(1,'文件上传',5,'rar|zip',5,'filelist',change_multifile)">	  
+
+
+<fieldset class="blue pad-10">
+    <legend>视频列表</legend>
+    <div class="picList" id="flvlist"></div>
+</fieldset>
+	  
+<input type="button" value="视频运行》" onclick="javascript:flashupload(2,'文件上传',1,'flv',5,'flvlist',change_images)">	  
+
+
+</body>
+
+</html>

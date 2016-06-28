@@ -1,0 +1,125 @@
+<include file="Public:header" />
+<script src="__PLUGIN__/jquery-1.9.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script type="text/javascript" src="__JS__/attachment.js"></script>
+</head>
+<body>
+
+
+	<div class="subnav">
+		<h1 class="title_2 line_x">
+			<notempty name="linkinfo">修改<else />添加</notempty>友情链接
+		</h1>
+	</div>
+
+	<div class="pad_lr_10">
+		<form action="{:U('edit')}" method="post"
+			enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$linkinfo['id']}">
+			<table width="100%" cellspacing="0" class="table_form">
+				<tbody>
+					<tr>
+						<th>
+							<font color="red">*</font>
+							链接名：
+						</th>
+						<td>
+							<input name="title" type="text" class="input-text" size="50"
+								value="{$linkinfo['title']}">
+							<span class="gray ml10"></span>
+						</td>
+					</tr>
+
+
+					<tr>
+						<th>
+							<font color="red">*</font>
+							链接地址：
+						</th>
+						<td>
+							<input name="url" type="text" class="input-text"
+								value="{$linkinfo['url']}" size="50">
+							<span class="gray ml10">正确格式如：http://www.baidu.com</span>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+					<tr>
+						<th>类型：</th>
+						<td>
+							<select name="type">
+								<volist name=":C('LINK_TYPE')" id="vo">
+								<option value="{$key}" <if condition="$key eq $linkinfo['type']">selected</if>>{$vo}</option>
+								</volist>
+							</select>
+						</td>
+					</tr>
+
+						<tr>
+							<th width="120">LOGO图片 :</th>
+							<td>
+							    <div style="margin-bottom:5px;">
+							       <input type="hidden" name="logo" id="thumb" value="{$linkinfo['logo']}">
+							       <notempty name="linkinfo['logo']">
+							       <img height="113" src="{$linkinfo['logo']}" id="thumb_preview" style="cursor:hand">
+							       <else/>
+							       <img height="113" src="/Public/Admin/img/upload-pic.png" id="thumb_preview" style="cursor:hand">
+							       </notempty>
+							       <a href="javascript:;" onclick="removeImg('thumb');">移除</a>
+							    </div>                				             	 			
+								<input type="button" onclick="javascript:flashupload(0,'图片上传',1,'jpg|jpeg|png|bmp|gif',2,'thumb',thumb_images)" class="btn" value="上传图片">
+				                <span style="color:red;"></span>
+                			</td>
+						</tr>
+
+					<tr>
+						<th>排序：</th>
+						<td>
+							<input name="sort" type="text" class="input-text" size="30"
+								value="{$linkinfo['sort']}" />
+							<span class="gray ml10">越大越靠前</span>
+						</td>
+					</tr>
+
+					<tr>
+						<th>是否推荐：</th>
+						<td>
+							<label>
+								<input name="top" type="radio" class="input-text" size="50"
+									value="1"
+								<eq name="linkinfo['top']" value="1">checked</eq>
+								/> 是
+							</label>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<label>
+								<input name="top" type="radio" class="input-text" size="50"
+									value="0"
+								<eq name="linkinfo['top']" value="0">checked</eq>/> 否
+							</label>
+						</td>
+					</tr>
+
+					<tr>
+						<th>链接描述：</th>
+						<td>
+							<textarea class="input_textarea" cols="70" rows="7"
+								name="info">{$linkinfo['info']}</textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<th width="120">&nbsp;</th>
+						<td valign="bottom">
+							<input class="smt  mr10" type="submit" name="submit" value="提交" />
+							&nbsp;&nbsp;
+							<a class="smt" href="{:U('index')}">返回列表</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+
+	<include file="Public:footer" />

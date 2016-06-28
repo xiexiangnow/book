@@ -1,0 +1,100 @@
+<include file="Public:header" />
+<script src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script src="__PLUGIN__/jquery.validate.min.js"></script>
+<script language="JavaScript" charset="utf-8" type="text/javascript">
+   $(function(){
+	   
+	   //密码格式验证   
+	   jQuery.validator.addMethod("checkPwd", function(value, element) {   
+	       var account = /^[\w]{3,20}$/;
+	       return this.optional(element) || (account.test(value));
+	   }, "密码格式不正确");	   
+	   
+	   $("#form1").validate({   
+	        rules: {    
+	        	newpwd: {checkPwd:true},		
+	            repwd:{equalTo:'#newpwd'}	            			
+	        },   
+	        messages: {     	        				
+	            repwd:{equalTo:"确认码不正确"}			
+	        },
+	        onkeyup: false
+	    });   	 
+	   
+   })
+</script>
+<style>
+  label.error{color:red;margin-left:10px;font-size: 13px; font-family: impact;background:url('/Public/Img/onError.gif') no-repeat 0 center;padding-left:20px;}
+</style>
+</head>
+<body>
+
+
+<div class="subnav">
+    <h1 class="title_2 line_x">修改账号信息</h1>
+</div>
+
+<div class="pad_lr_10" >
+    <form action="{:U('admin/info')}" method="post" id="form1">	
+    <table width="100%" cellspacing="0" class="table_form">
+        <tbody>
+			<tr>
+                <th width="150">账号：</th>                
+				<td>
+					<strong>{$info['account']}</strong>
+				</td>            	                                
+            </tr>
+			<tr>
+                <th width="150">登录次数：</th>                
+				<td>
+					<strong>{$info['logincount']} 次</strong>
+				</td>            	                                
+            </tr> 
+			<tr>
+                <th width="150">上次登录时间：</th>                
+				<td>
+					<strong>{$info['lastlogintime']|date="Y-m-d H:i:s",###}</strong>
+				</td>            	                                
+            </tr>                          
+            <tr>
+                <th>姓名：</th>
+                <td>
+                    <input name="realname" type="text" value="{$info['realname']}" class="input-text" size="30">
+                    <div id="realnameTip" style="width:300px"></div>
+                </td>
+            </tr>
+
+			<tr>
+				<th>原密码：</th>
+				<td>
+					<input name="pwd" type="password" class="input-text" size="30">
+                    <span class="gray ml10">留空不修改</span>     
+				</td>
+			</tr>
+			<tr>
+				<th>新密码：</th>
+				<td>
+					<input name="newpwd" id="newpwd" type="password" class="input-text" size="30">
+                    <span class="gray ml10">数字、字母或下滑线   3-20位以内</span>
+				</td>
+			</tr>
+			<tr>
+				<th>确认密码：</th>
+				<td>
+					<input name="repwd" type="password" class="input-text" size="30">
+				</td>
+			</tr>
+
+			<tr>
+				<th width="120">&nbsp;</th>
+                <td valign="bottom">
+					<input class="smt  mr10" type="submit" name="submit" value="修改" />
+				</td>
+			</tr>
+
+        </tbody>
+    </table>
+    </form>
+</div>
+
+<include file="Public:footer" />

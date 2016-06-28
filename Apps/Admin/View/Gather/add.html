@@ -1,0 +1,142 @@
+
+<include file="Public:header" />
+
+
+<script src="__PLUGIN__/jquery-1.9.min.js"></script>
+<script src="__JS__/jquery.validate.min.js"></script>
+<script src="__PLUGIN__/layer/layer1.9/layer.js"></script>
+<script type="text/javascript" src="__PLUGIN__/my97/WdatePicker.js"></script>
+<script>
+    var count = 0;
+
+    function addByScript() {
+        var table = document.getElementById("tbl1");
+        var newRow = table.insertRow(table.rows.length);
+        newRow.id = "row" + count;
+
+        var contentCell = newRow.insertCell(-1);
+        contentCell.innerHTML = '<input type="text" name="xuan[]" class="input-text" size="40" style="margin-left:-8px;" placeholder="新增投票选项" />';
+        contentCell = newRow.insertCell(-1);
+
+        var delBtn = document.createElement("input");
+        delBtn.type = "button";
+        delBtn.className = "button";
+        delBtn.id = "btnDel"+count;
+        delBtn.value = "-";
+        delBtn.style = "background:#289121;color:white;cursor:pointer;margin-top:5px;font-weight:bold;";
+        delBtn.onclick = new Function("del(this)");
+        contentCell.appendChild(delBtn);
+
+        count++;
+    }
+    function del(obj) {
+        var row = obj.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
+</script>
+
+</head>
+<body>
+
+
+<div class="subnav">
+    <h1 class="title_2 line_x">投票设置</h1>
+</div>
+
+<div class="pad_lr_10" >
+    <form action="__ACTION__" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{$data['id']}">
+        <table width="100%" cellspacing="0" class="table_form">
+            <tbody>
+            <tr>
+                <th>投票标题：</th>
+                <td>
+                    <input name="title" type="text"  class="input-text" size="40" value="{$data['title']}" placeholder="请输入投票的标题">
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <th>选项类型：</th>
+                <td><input type="radio" name="options" value="1" <eq name="data['options']" value="1">checked="checked" </eq>/>单选
+                    <input type="radio" name="options" value="2" <eq name="data['options']" value="2">checked="checked" </eq> />多选
+
+                </td>
+            </tr>
+            <tr>
+                <th>投票选项：</td>
+                <td>
+                    <empty name="id">
+                        <input class="input-text" size="40" type="text" name="xuan[]" value="" placeholder="投票选项1"/>
+
+                        <br/>
+                        <input class="input-text" size="40" type="text" name="xuan[]" value="" placeholder="投票选项2" style="margin-top:20px; margin-bottom:8px;" />
+
+                        <else/>
+
+                            <volist name="list" id="lis">
+                                <input type="hidden" name="ids[]" value="{$lis['id']}"/>
+                                <input class="input-text" size="40" type="text" name="xuan[]" value="{$lis['content']}" placeholder="投票选项" style="margin-top:20px; margin-bottom:8px;" />
+                                <br/>
+                            </volist>
+
+
+                    </empty>
+
+                    <table id="tbl1">
+
+
+                    </table>
+                    <input type="button" class="button" value="+" title="新增一个投票选项" onclick="addByScript()"
+                           style="background:#289121;color:white;cursor:pointer;margin-left:275px;font-weight:bold;"/><span
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <th>收集结束时间：</th>
+                <td>
+                    <input name="endtime" type="text" size="23" id="d4312" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="input-text Wdate" value="{:date('Y-m-d H:i:s',$data['endtime'])}" readonly>
+
+
+                </td>
+            </tr>
+            <tr>
+                <th>投票介绍：</th>
+                <td>
+                    <textarea cols="60" rows="3" name="description" >{$data['description']}</textarea>
+                    <!--<span class="gray ml10"><font color="red">*　　！投票的简介</font></span>-->
+                </td>
+            </tr>
+
+            <tr>
+                <th>投票人群：</th>
+                <td><label><input type="radio" name="profiles" value="1"  <eq name="data['profiles']" value="1">checked="checked" </eq> /> </label>所有人
+                    <label><input type="radio" name="profiles" value="2" <eq name="data['profiles']" value="2">checked="checked" </eq> /></label>用户投票</td>
+
+            </tr>
+            <tr>
+                <th>是否开启投票：</th>
+                <td><label><input type="radio" name="state" value="1"  <eq name="data['state']" value="1">checked="checked"  </eq> /></label>是
+                    <label><input type="radio" name="state" value="2"  <eq name="data['state']" value="2">checked="checked"  </eq> /></label>否</td>
+
+            </tr>
+
+            <tr>
+                <th width="120">&nbsp;</th>
+                <td valign="bottom">
+                    <input class="smt  mr10" type="submit" name="submit"  value="提交" />&nbsp;&nbsp;
+                    <a class="smt" href="{:U('Gather/index')}">返回列表</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<!--时间插件引入-->
+
+
+<include file="Public:footer" />

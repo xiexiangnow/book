@@ -1,0 +1,129 @@
+﻿<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.9.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/layer/layer1.9/layer.js"></script>
+<script type="text/javascript" src="__PLUGIN__/jquery.validate.min.js"></script>
+<script type="text/javascript">
+
+   $(function(){
+	   $(':radio').bind({
+		   click:function(){
+			   if(1==$(this).val()){
+				   $("#uids").hide();
+			   }else{
+				   $("#uids").show();
+			   }
+		   }
+	   })
+	   
+	   $("#form1").validate({   
+	        rules: {    
+	        	title: {required:true},		
+	            content:{required:true}	            			
+	        },   
+	        messages: {     	        				
+	        	title: {required:'必填'},		
+	            content:{required:'必填'}	            						
+	        },
+
+	        submitHandler: function(form){
+	        	//如果部分会员接收，则必须选择会员
+	        	var type = $('input[name="type"]:checked').val();
+	        	if(2==type && 0==$('input[name="uid[]"]:checked').length){	        		
+	        		alert('请选择会员');
+	        		return false;
+	        	}
+	        	form.submit();    
+	        }  
+	    }); 
+   })
+   
+//弹出层索引   
+var index_layer = null ;   
+function userpicker(){
+	url = '/Admin/User/search.html';
+	index_layer = layer.open({
+	    type: 2,	    
+	    fix: false,
+	    title: '选择会员',
+	    maxmin: false,
+	    content: url,
+	    area: ['800px' , '500px']
+	});
+}   
+   
+	//会员列表
+	function uidadd(data){
+		if(data==null || data==''){
+			return false;
+		}
+		
+	   $("#select").empty();	
+	   for(var i in data){    		       		  		   
+		   $("#select").append("<label><input type='checkbox' name='uid[]' checked value="+data[i]['id']+">"+data[i]['title']+"</li></label>");
+	   }
+	     	  
+	   layer.close(index_layer);
+	}   	
+</script>
+<style>
+  label.error{color:red;margin-left:10px;font-size: 13px; font-family: impact;background:url('/Public/Img/error.png') no-repeat 0 0;padding-left:20px;}
+</style>
+</head>
+<body>
+
+
+
+
+<div class="subnav">
+    <h1 class="title_2 line_x">发送站内消息</h1>
+</div>
+
+<div class="pad_lr_10" >
+	<form action="{:U('__ACTION__')}" id="form1" method="post">	
+    <table width="100%" cellspacing="0" class="table_form">
+        <tbody>
+			<tr>
+				<th>接受者</th>
+				<td>
+					<label><input type="radio" name="type" value="1" checked>全部会员</label>&nbsp;&nbsp;
+					<label><input type="radio" name="type" value="2">部分会员</label>
+				</td>                                  
+            </tr>
+			<tr id="uids" style="display:none">
+				<th>会员列表</th>
+				<td>		
+				<div id="select"></div>				
+				  <input class="btn" type="button" onclick="userpicker();" value="选择会员" />			
+				</td>
+			</tr>			
+			
+			<tr>
+				<th>消息标题</th>
+				<td>
+					<input name="title" type="text" class="input-text" size="40" value=""> <font color="red">*</font> 
+				</td>
+			</tr>
+			
+			<tr>
+				<th>消息内容</th>
+				<td>	
+                   <textarea class="input_textarea" cols="70" rows="7" name="content"></textarea> <font color="red">*</font>
+				</td>
+			</tr>	
+			
+			<tr>
+				<td>&nbsp;</td>
+				<td>					
+					<input class="smt mr10" type="submit" name="submit" value="提交" />&nbsp;
+					<a class="smt" href="{:U('index',array('pid'=>$info['pid']))}">返回列表</a>
+				</td>
+			</tr>
+
+        </tbody>
+    </table>
+    </form>
+</div>
+
+
+
+<include file="Public:footer" />

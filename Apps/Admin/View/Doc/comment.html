@@ -1,0 +1,86 @@
+<include file="./Apps/Admin/View/Public/header.html" />
+<script language="JavaScript" charset="utf-8" type="text/javascript" src="__STATIC__/jquery-1.4.4.min.js"></script>
+<script language="JavaScript" charset="utf-8" type="text/javascript" src="__STATIC__/system.js"></script>
+<script type="text/javascript">
+/*设置状态*/
+function setStatus(id, status) {
+	if (!id || id.length == 0) {
+		return alert("请选择一条评论");	
+	}
+	$('#myform').attr('action', "{:U('Doc/commentstate')}" );
+	$('#state').val(status);
+	$('#myform').submit();	
+}
+</script>
+</head>
+<body>
+
+
+  <form action="{:U('Doc/index')}" id="myform">
+  <input type="hidden" name="state" id="state" value="1">
+  <input type="hidden" name="record_id" value="{$base['id']}">
+  <table width="98%" border="0" cellpadding="5" cellspacing="1" class="table">
+
+    <tr>
+      <td colspan="5" class="table_title"><span class="fl">{$base['title']}</span></td>
+    </tr>
+              
+    
+    <tr class="list_head ct">
+            <td width="8">&nbsp;</td>                                         
+            <td width="800px">评论内容</td>            
+            <td width="50">留言者</td>
+            <td>发布时间</td>            
+            <td>操作</td>
+    </tr>
+    
+    <notempty name="list">
+	    <tbody>    
+	       <volist name="list" id="vo">       
+	          <tr class="tr">          
+	             <td class="td ct"><input name='id[]' type='checkbox' value='{$vo['id']}' class="noborder"></td>                       	             
+	             <td>{$vo['content']}</td>             
+	             <td class="ct">{:get_account($vo['uid'])}</td>
+	             <td class="ct">{$vo['time']|date="Y-m-d H:i",###}</td>	             
+	             <td class="td ct">       	                
+	                <a href="{:U('doc/commentstate',array('id'=>$vo['id'],'state'=>0))}" onclick="javascript:return confirm('确认要删除? ')" title="点击删除">删除</a> |
+	                <if condition="$vo['state'] eq 1"> 
+	                <a href="{:U('doc/commentstate',array('id'=>$vo['id'],'state'=>2))}" title="点击隐藏">显示</a>
+	                <else/>
+	                <a href="{:U('doc/commentstate',array('id'=>$vo['id'],'state'=>1))}" title="点击显示"><font color="red">隐藏</font></a>
+	                </if>
+	             </td>        
+	       </tr>       
+	       </volist>      
+	    </tbody>
+    
+       <tr class="tr">
+           <td colspan="5" class="pagelist">{$page}</td>
+       </tr>
+        
+       <else/>
+       
+       <tr class="tr">
+           <td colspan="5">暂无数据</td>
+       </tr> 
+       
+       </notempty> 
+    
+      </table>
+      
+     <notempty name="list">     
+		<table width="98%" border="0" cellpadding="5" cellspacing="1" class="table">
+			<tr class="tr">
+		      <td colspan="9" valign="middle"><input type="button" onclick="$.selectAll('id[]');" id="checkall" value="全/反选" class="bginput">      
+		        <input type="button" value="批量显示" class="bginput" onclick="setStatus($.checkBoxValue('id[]'), 1)" />        
+		        <input type="button" value="批量隐藏" class="bginput" onclick="setStatus($.checkBoxValue('id[]'), 2)" />        
+		        <input type="button" value="批量删除" class="bginput" onclick="setStatus($.checkBoxValue('id[]'), 0)"/>        		        
+		        </td>
+		    </tr>
+		</table>      
+     </notempty>
+    </form>
+
+
+    
+<include file="./Apps/Admin/View/Public/footer.html" />

@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<title>裁切图片</title>
+<script language="javascript" type="text/javascript"
+	src="__PLUGIN__/jquery-1.9.min.js"></script>
+<link rel="stylesheet"
+	href="__PLUGIN__/imgareaselect/css/imgareaselect-default.css"
+	type="text/css" />
+<script type="text/javascript"
+	src="__PLUGIN__/imgareaselect/js/jquery.imgareaselect.pack.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#xuwanting').imgAreaSelect({
+			handles : true,
+			onSelectChange : preview,
+			onSelectEnd : cut
+		});
+		$('#cut_zone').bind({
+			click : function() {
+				docrop();
+			}
+		})
+		//当点击选区外时的事件
+		$('.imgareaselect-outer').bind({
+			click : function() {
+				$("#cut_zone").hide();
+				$('#x2').val('');
+				$('#y2').val('');
+			}
+		})
+	});
+
+	function preview(img, selection) {
+		$("#cut_zone").hide();
+
+		$('#x1').val(selection.x1);
+		$('#y1').val(selection.y1);
+		$('#x2').val(selection.x2);
+		$('#y2').val(selection.y2);
+	}
+
+	function cut(img, selection) {
+		var selection_div = $(".imgareaselect-selection").parent();
+		var left = parseInt(selection_div.css("left")) + selection.width;
+		var top = parseInt(selection_div.css("top"));
+		$("#cut_zone").css({
+			"top" : top + "px",
+			"left" : left + "px"
+		});
+		$("#cut_zone").show();
+	}
+
+	//执行裁切操作
+	function docrop() {
+		var x2 = $('#x2').val();
+		var y2 = $('#y2').val();
+
+		if ('' == x2 || '' == y2) {
+			alert('请选择裁切区域 !');
+			return false;
+		}
+
+		$("#crop_form").submit();
+	}
+</script>
+<style type="">
+#cut_zone {
+	width: 40px;
+	height: 20px;
+	padding-top: 5px;
+	text-align: center;
+	font-size: 12px;
+	color: red;
+	background-color: yellow;
+	position: absolute;
+	display: none;
+	z-index: 999;
+	cursor: pointer;
+}
+</style>
+<body>
+
+	<form action="{:U('crop')}" method="post" id="crop_form">
+		<table width="100%" border="0" cellpadding="5" cellspacing="1"
+			bordercolor="#CCCCCC"
+			style="margin-top: 10px; background: #CCCCCC; font-size: 12px;">
+
+
+
+			<tr>
+				<td bgcolor="#FFFFFF" width="20%" align="left">
+					<img id="xuwanting" src="{$pic}" />
+				</td>
+			</tr>
+
+
+			<tr>
+				<td bgcolor="#E8F4E6" width="20%" align="left" height="20px">
+					<input type="hidden" id="pic"  name="pic" value="{$pic}">						
+							<input type="hidden" name="cmd" value="crop">
+								<input type="hidden" id="x1" name="x1" />
+								<input type="hidden" id="y1" name="y1" />
+								<input type="hidden" id="x2" name="x2" />
+								<input type="hidden" id="y2" name="y2" />
+								<input type="button" value="确认剪裁" onclick="docrop();" />
+				</td>
+			</tr>
+
+
+		</table>
+	</form>
+
+
+
+</body>
+</html>
+<script type="text/javascript">
+	
+</script>

@@ -1,0 +1,67 @@
+<include file="./Apps/Admin/View/Public/header.html" />
+</head>
+<body>
+
+
+<div class="subnav">
+    <h1 class="title_2 line_x"><?php echo 'add'==$act?'添加':'修改'?>菜单</h1>
+</div>
+
+<div class="pad_lr_10" >
+	<form action="{:U('__ACTION__')}" method="post">
+	<input type="hidden" name="id" value="{$info['id']}">
+	<input type="hidden" name="pid" value="{$info['pid']}">
+    <table width="100%" cellspacing="0" class="table_form">
+        <tbody>
+			<tr>
+				<th width="100" class="rt">上级目录：</th>
+				<td>
+				  <select name="pid"  class="J_cate_select mr10">
+				  <option value="0">根目录</option>
+				   <volist name="menu" id="vo">
+				      <option value="{$vo['id']}" <if condition="$vo['id'] eq $info['pid']">selected</if>>{:branch_level($vo['level'])}{$vo['title']}</option>
+				   </volist>
+				  </select>					
+				</td>
+			</tr>
+			<tr>
+				<th>名称：</th>
+				<td>
+					<input name="title" type="text" value="{$info['title']}" class="input-text" size="50"> <font color="red">*</font>
+				</td>
+			</tr>
+			<tr>
+				<th>路径：</th>
+				<td>
+					<input name="path" type="text" value="{$info['path']}"  class="input-text" size="50"> 
+					<span class="gray ml10">目录结构 无需链接（1、2级），页面和操作需要（3、4级），请使用参数"method=xx"区分同一个方法的不同权限</span>					
+				</td>
+			</tr>
+			<tr>
+				<th>显示：</th>
+				<td>
+					<label><input name="is_show" type="radio" value="1" <if condition="$info['is_show'] eq 1">checked</if>>显示</label>&nbsp;&nbsp;  
+					<label><input name="is_show" type="radio" value="0" <if condition="$info['is_show'] eq 0">checked</if>>隐藏</label>
+				</td>
+			</tr>			
+			<tr>
+				<th>排序：</th>
+				<td>
+					<input name="sort" type="text" value="{$info['sort']}"  class="input-text" size="50"> 
+					<span class="gray ml10">必须是整数，越大越靠前</span> 
+				</td>
+			</tr>
+			<tr>
+				<th width="120">&nbsp;</th>
+                <td valign="bottom">
+					<input class="smt  mr10" type="submit" name="submit" value="<?php echo 'add'==$act?'添加':'修改'?>" />&nbsp;&nbsp;
+					<a class="smt" href="{:U('index',array('pid'=>$info['pid']))}">返回列表</a>
+				</td>
+			</tr>
+        </tbody>
+    </table>
+    </form>
+</div>
+
+
+<include file="./Apps/Admin/View/Public/footer.html" />

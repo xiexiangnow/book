@@ -1,0 +1,89 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+/*设置状态*/
+function setStatus(id, status) {
+	if (!id || id.length == 0) {
+		return alert("请选择一篇文章");	
+	}
+	if(0==status){
+	    $('#myform').attr('action', "{:U('Doc/del')}" );
+	}else{
+		$('#myform').attr('action', "{:U('Doc/state')}" );
+	}
+	$('#state').val(status);
+	$('#myform').submit();	
+}
+</script>
+</head>
+<body>
+
+
+  <div class="pad_lr_10" style="margin-top:20px;">
+
+  <form action="__ACTION__">
+			<table width="100%" cellspacing="0" class="search_form">
+				<tbody>
+					<tr>
+						<td>
+							<div class="explain_col">
+								标题或关键词
+								<input name="keywords" type="text" class="input-text" size="30" value="{$keywords}">													
+								<input type="submit" name="search" class="btn" value="搜索" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+
+		<div class="J_tablelist table_list">
+		<form action="__ACTION__" id="myform" method="get">
+		<input type="hidden" name="dis" id="state" value="-1">
+				<table width="100%" cellspacing="0">
+					<thead>
+						<tr>
+							<th width="40"><input type="checkbox" name="checkall" class="J_checkall"></th>							
+							<th align="left">标题</th>
+							<th>分类</th>
+							<th>添加时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<volist name="list" id="vo">
+						<tr>
+							<td align="center"><input type="checkbox" name='id[]' class="J_checkitem" value="{$vo['id']}"></td>							
+							<td>
+								<a href="{:U('Doc/info',array('id'=>$vo['id']))}" target="_blank" title="点击阅读内容">{$vo['title']}</a>
+							</td>
+							<td align="center">{$ary[$vo['category_id']]}</td>
+							<td align="center">{$vo['time']|date="Y-m-d H:i",###}</td>
+							<td align="center">
+				                <a href="{:U('doc/del',array('id'=>$vo['id']))}" onclick="javascript:return confirm('确认要删除?删除后不可恢复！ ')" title="点击删除">删除</a> | 
+				                <a href="{:U('doc/state',array('id'=>$vo['id'],'dis'=>1))}" title="点击还原">还原</a>
+							</td>
+						</tr>
+						</volist>
+					</tbody>
+				</table>				
+		  </form>
+		</div>
+
+		<div class="btn_wrap_fixed">
+            <label class="select_all mr10"><input type="checkbox" name="checkall" class="J_checkall">全选/取消</label>
+		        <input type="button" value="批量删除" class="btn" onclick="setStatus($.checkBoxValue('id[]'), 0)"/>        
+		        <input type="button" value="批量还原" class="btn" onclick="setStatus($.checkBoxValue('id[]'), 1)"/>		
+			<div id="pages">{$page}</div>
+		</div>
+
+
+    
+<include file="Public:footer" />
+<script type="text/javascript" src="__JS__/listTable.js"></script>
+<script>
+$(function(){
+	$('.J_tablelist').listTable();
+});
+</script>

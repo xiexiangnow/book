@@ -1,0 +1,111 @@
+
+<div class="main-content">
+    <!-- User Info, Notifications and Menu Bar -->
+    <nav class="navbar user-info-navbar" role="navigation">
+        <!-- Left links for user info navbar -->
+        <ul class="user-info-menu left-links list-inline list-unstyled">
+
+            <li class="hidden-sm hidden-xs">
+                <a href="#" data-toggle="sidebar">
+                    <i class="fa-bars"></i>
+                </a>
+            </li>
+
+            <li class="dropdown hover-line">
+                <a href="#" data-toggle="dropdown">
+                    <i class="fa-envelope-o"></i>
+                    <span class="badge badge-green">15</span>
+                </a>
+
+                <ul class="dropdown-menu messages">
+                    <li>
+
+                    </li>
+
+                    <li class="external">
+                        <a href="blank-sidebar.html">
+                            <span>All Messages</span>
+                            <i class="fa-link-ext"></i>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- Right links for user info navbar -->
+        <ul class="user-info-menu right-links list-inline list-unstyled">
+
+
+            <li class="dropdown user-profile">
+                <a href="#" data-toggle="dropdown">
+                    <img src="__PUBLIC__/Index/images/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+							<span>
+								欢迎你：{$user_info[1]}
+								<i class="fa-angle-down"></i>
+							</span>
+                </a>
+
+                <ul class="dropdown-menu user-profile-menu list-unstyled">
+                    <li>
+                        <a href="#edit-profile">
+                            <i class="fa-edit"></i>
+                            New Post
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#settings">
+                            <i class="fa-wrench"></i>
+                            Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#profile">
+                            <i class="fa-user"></i>
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#help">
+                            <i class="fa-info"></i>
+                            Help
+                        </a>
+                    </li>
+                    <li class="last">
+                        <a href="{:U('Login/login_out')}">
+                            <i class="fa-lock"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </nav>
+
+    <!--面包屑区域-->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">{$parent}</h1>
+            <p class="description"><i class="linecons-attach"></i>每一步做到极致，下一步美好自然呈现！Each step to achieve the ultimate, the next step is a natural show!</p>
+        </div>
+
+        <div class="breadcrumb-env">
+
+            <ol class="breadcrumb bc-1">
+                <li>
+                    <a href="/Index/index"><i class="fa-home"></i>主页</a>
+                </li>
+                <if condition="$parent neq null">
+                <li>
+                    <a >{$parent}</a>
+                </li>
+                <li class="active">
+
+                    <strong>{$child}</strong>
+                </li>
+                </if>
+            </ol>
+
+        </div>
+
+    </div>

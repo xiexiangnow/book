@@ -1,0 +1,62 @@
+<include file="Public:header" />
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="__PLUGIN__/artDialog/jquery.artDialog.js?skin=default"></script>
+<script src="__PLUGIN__/artDialog/plugins/iframeTools.source.js"></script>
+<script language="javascript" type="text/javascript" src="__JS__/attachment.js"></script>
+</head>
+<body>
+
+
+<div class="subnav">
+    <h1 class="title_2 line_x"><empty name="info">添加<else/>修改</empty>实战项目</h1>
+</div>
+
+<div class="pad_lr_10" >
+    <form action="<empty name='info'>{:U('pro_add_data')}<else/>{:U('pro_edit')}</empty>" method="post" >
+        <input type="hidden" name="id" value="{$info['id']}">
+        <table width="100%" cellspacing="0" class="table_form">
+            <tbody>
+            <tr>
+                <th>项目名称<font color="red">*</font>：</th>
+                <td>
+                    <input name="pro_name" type="text"  class="input-text" size="50" value="{$info['pro_name']}">
+                    <span class="gray ml10"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>域名地址<font color="red">*</font>：</th>
+                <td>
+                    <input name="pro_web" type="text"  class="input-text" size="50" value="{$info['pro_web']}">
+                    <span class="gray ml10">例：www.98huoguo.com</span>
+                </td>
+            </tr>
+            <tr>
+                <th>所用框架<font color="red">*</font>：</th>
+                <td>
+                    <input name="pro_jia" type="text"  class="input-text" size="20" value="{$info['pro_jia']}">
+                    <span class="gray ml10">所用开发框架</span>
+                </td>
+            </tr>
+
+            <tr>
+                <th>是否带有手机站<font color="red">*</font>：</th>
+                <td>
+                    <label><input type="radio" name="is_mobile" value="1" <?php echo $info['is_mobile']==1?"checked='checked'":''?>/>是</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label><input type="radio" name="is_mobile" value="2" <?php echo $info['is_mobile']==2?"checked='checked'":''?>/>否</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label><input type="radio" name="is_mobile" value="3" <?php echo $info['is_mobile']==3?"checked='checked'":''?>/>自适应</label>
+                </td>
+            </tr>
+            <tr>
+                <th width="120">&nbsp;</th>
+                <td valign="bottom">
+                    <input class="smt  mr10" type="submit" name="submit" value="提交" />&nbsp;&nbsp;
+                    <a class="smt" href="{:U('pro_index')}">返回列表</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+
+<include file="Public:footer" />

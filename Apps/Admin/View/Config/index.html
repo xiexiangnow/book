@@ -1,0 +1,109 @@
+<include file="Public:header"/>
+<script src="__PLUGIN__/jquery-1.9.min.js"></script>
+<script type="text/javascript">
+	/*排序*/
+	function setSort() {
+		$('#myform').attr('action', "{:U('Config/sort')}");
+		$('#myform').submit();
+	}
+</script>
+</head>
+<body>
+
+
+	<div class="subnav">
+		<div class="content_menu ib_a blue line_x">
+			<a class="add fb J_showdialog" href="{:U('Config/add')}" data-title="添加">
+				<em>添加配置</em>
+			</a>
+		</div>
+	</div>
+
+	<div class="pad_lr_10">
+
+		<form action="{:U('Config/index')}" method="get">
+
+			<table width="100%" cellspacing="0" class="search_form">
+				<tbody>
+					<tr>
+						<td>
+							<div class="explain_col">
+								分组
+								<select name='group' class='select'>
+									<option value='0'>所有</option>
+									<volist name=":get_config_group(0,true)" id="vo">
+									<option value='{$key}' <if condition="$group eq $key">selected</if>>
+									   {$vo}
+									</option>
+									</volist>
+								</select>
+								类型
+								<select name='type' class='select'>
+									<option value=''>所有</option>
+									<volist name=":get_config_type(0,true)" id="vo">
+									<option value='{$key}' <if condition="($type neq '') AND ($type eq $key)">selected</if>>
+									    {$vo}
+									</option>
+									</volist>
+								</select>
+								名称或标题
+								<input name="keyword" type="text" class="input-text" size="30" value="{$keyword}">
+								<input type="submit" name="search" class="btn" value="搜索" />
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</form>
+
+		<div class="J_tablelist table_list">
+
+			<table width="100%" cellspacing="0">
+
+				<thead>
+					<tr>
+						<th>编号</th>
+						<th align="left">参数名称</th>
+						<th align="left">标题</th>
+						<th align="left">分组</th>
+						<th align="left">类型</th>
+						<th>排序</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+
+				<form action="" id="myform">
+					<tbody>
+						<volist name="list" id="vo">
+						<tr>
+							<td align="center">{$vo['id']}</td>
+							<td>{$vo['name']}</td>
+							<td>{$vo['title']}</td>
+							<td>{$vo['group']|get_config_group}</td>
+							<td>{$vo['type']|get_config_type}</td>
+							<td align="center">
+								<input type="text" name="sort[{$vo['id']}]" style="text-align: center;" class="input-text" size="8" value="{$vo['sort']}">
+							</td>
+							<td align="center">
+								<a href="{:U('Config/edit',array('id'=>$vo['id']))}" title="点击修改配置">修改</a>
+								|
+								<a href="{:U('Config/del',array('id'=>$vo['id']))}" onclick="javascript:return confirm('确认要删除? 删除后不可恢复!')" title="点击删除配置">删除</a>
+							</td>
+						</tr>
+						</volist>
+					</tbody>
+				</form>
+
+			</table>
+
+		</div>
+
+
+		<div class="btn_wrap_fixed">
+			<input type="button" class="btn" onclick="setSort();" value="排序" />
+			<div id="pages">{$page}</div>
+		</div>
+
+
+<include file="Public:footer" />

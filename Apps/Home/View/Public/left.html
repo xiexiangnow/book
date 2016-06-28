@@ -1,0 +1,26 @@
+		<div class="col-left col-1 left-memu">		
+		    <volist name="umenu[$t]['child']" id="val">
+			<h5 class="title">
+		    <notempty name="val['icon']">
+			<img src="__IMG__/icon/{$val['icon']}" width="15" height="15"/>
+			</notempty>
+			{$val['title']}
+			</h5>
+			<ul>
+			<volist name="val['child']" id="vo">
+				<li <?php if(strtolower(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME)==$vo['path']){?>class="on"<?php }?>>
+					<a href="/{$vo['path']}?t={$t}">
+					    <notempty name="vo['icon']">
+						<img src="__IMG__/icon/{$vo['icon']}" width="15" height="15"/>
+						</notempty>
+						{$vo['title']}
+					</a>
+				</li>			   
+			</volist>
+			</ul>
+			</volist>
+			<span class="o1"></span>
+			<span class="o2"></span>
+			<span class="o3"></span>
+			<span class="o4"></span>
+		</div>

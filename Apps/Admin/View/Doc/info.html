@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>内容</title>
+</head>
+<body style="background-color:#e6e6e6;">
+
+
+ 
+<div style="text-align:left;width:80%;margin:50px auto;">
+            
+            <h1>{$base.title}</h1>
+            <p>时间：{$base.time|date="Y-m-d H:i:s",###}&nbsp;&nbsp;&nbsp;&nbsp;浏览量：{$base.view}&nbsp;&nbsp;&nbsp;&nbsp;<notempty name="base['writer']">作者：{$base.writer}</notempty></p>
+            
+			<switch name="base.module">
+			<case value="2">
+			
+<script type="text/javascript" src="__PLUGIN__/jquery-1.7.2.min.js"></script>
+<link type="text/css" rel="stylesheet" href="__PLUGIN__/tn3/tn3.css"></link>
+<script type="text/javascript" src="__PLUGIN__/tn3/js/jquery.tn3lite.min.js"></script>			
+<script type="text/javascript">
+$(document).ready(function() {
+	var tn1 = $('.mygallery').tn3({
+		skinDir:"__PLUGIN__/tn3/skins",
+		imageClick:"fullscreen",
+		image:{
+		maxZoom:1.5,
+		crop:true,
+		clickEvent:"dblclick",
+		transitions:[{
+		type:"blinds"
+		},{
+		type:"grid"
+		},{
+		type:"grid",
+		duration:460,
+		easing:"easeInQuad",
+		gridX:1,
+		gridY:8,
+		// flat, diagonal, circle, random
+		sort:"random",
+		sortReverse:false,
+		diagonalStart:"bl",
+		// fade, scale
+		method:"scale",
+		partDuration:360,
+		partEasing:"easeOutSine",
+		partDirection:"left"
+		}]
+		}
+	});
+});
+</script>	
+<div id="content">
+    <div class="mygallery clearfix">
+	<div class="tn3 album">
+	    <ol>
+	    <volist name=":string2array($info['sourceurls'])" id="vo">
+		<li>
+		    <h4>{$base.title}</h4>
+		    <div class="tn3 description">{$vo['alt']}</div>
+		    <a href="{$vo['url']}">
+			<img src="{$vo['url']}" />
+		    </a>
+		</li>
+		</volist>
+	    </ol>
+	</div>
+    </div>
+</div>
+			
+				
+							
+			</case>
+			<case value="3">					
+					<?php
+					   $vedio_ary = string2array($info['sourceurls']);
+                       $path = $vedio_ary[0]['url'];
+					?>	
+					
+                      <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+                      codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" height="276" width="497">
+                      <param name="movie"
+                      value="__PLUGIN__/vcastr22.swf?vcastr_file=<?php echo $path?>">
+                      <param name="quality" value="high">
+                      <param name="allowFullScreen" value="true" />
+                      <embed src="__PLUGIN__/vcastr22.swf?vcastr_file=<?php echo $path?>"
+                      quality="high"
+                      pluginspage="http://www.macromedia.com/go/getflashplayer"
+                      type="application/x-shockwave-flash" width="497" height="276">
+                      </embed>
+                      </object>    					
+							
+			</case>
+			<case value="4">
+<style>
+.btn {
+    font-family: Arial;
+    font-size: 12px;
+    line-height: 1.5;	
+    background: none repeat scroll 0 0 #f1f0f0;
+    border: 1px solid #c4c4c4;
+    border-radius: 2px;
+    color: #333;
+    cursor: pointer;
+    display: inline-block;
+    font-family: inherit;
+    margin-right: 10px;
+    overflow: visible;
+    padding: 4px 15px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    white-space: nowrap;
+}
+</style>			
+					<?php
+					   $vedio_ary = string2array($info['sourceurls']);
+                       $path = $vedio_ary[0]['url'];
+					?>				
+			        <a href="{$path}" class="btn">下载资料</a>
+			
+			
+			</case>					
+			</switch>	
+				
+			<br/>	
+							            
+            {:htmlspecialchars_decode($info['content'])}
+            
+            <br/>
+            
+            <notempty name="base['keywords']">
+                                      关键词：{$base['keywords']}
+            </notempty>
+            
+            <br/>
+            
+</div>
+
+
+    
+<body>
+</html>

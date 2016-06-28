@@ -1,0 +1,202 @@
+<include file = "Public:header"/>
+<include file = "Public:nav_list"/>
+<include file = "Public:top_nav"/>
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">菜单 <if condition="$menu_info['id'] neq null">修改<else/>添加</if></h3>
+                <div class="panel-options">
+                    <a href="#" data-toggle="panel">
+                        <span class="collapse-icon">–</span>
+                        <span class="expand-icon">+</span>
+                    </a>
+                    <a href="#" data-toggle="remove">
+                        ×
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <form role="form" class="form-horizontal" id="addmenu_form" method="post" action="">
+
+                    <input type="hidden" name="id" value="{$menu_info['id']}"/>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">上级目录</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="pid" >
+
+                                <if condition="$menu_info neq null">
+                                    <if condition="$menu_info['parent_id'] neq null">
+                                    <option value="{$menu_info['parent_id']}">{$menu_info['parent_name']}</option>
+                                     <else/>
+                                     <option value="0"> ≡≡≡根目录≡≡≡</option>
+                                     </if>
+
+                                <else/>
+                                <option value="0"> ≡≡≡根目录≡≡≡</option>
+                                <!--暂定为最多三级-->
+                                <volist name="menu_list" id="v">
+                                <option value="{$v['id']}">{:str_repeat('&nbsp;',$v['level']*5)} <if condition="$v['level'] gt 1">∟</if>{$v['title']}
+                                </option>
+
+
+                                <volist name="v['child']" id="vo">
+                                    <option value="{$vo['id']}">{:str_repeat('&nbsp;',$vo['level']*5)} <if condition="$vo['level'] gt 1">∟</if>{$vo['title']}
+                                    </option>
+
+
+                                <volist name="vo['child']" id="val">
+                                    <option value="{$val['id']}">{:str_repeat('&nbsp;',$val['level']*5)} <if condition="$val['level'] gt 1">∟</if>{$val['title']}
+                                    </option>
+                                </volist>
+                                 </volist>
+                                </volist>
+                                </if>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-1">名称 <span style="color:red;">*</span></label>
+
+                        <div class="col-sm-10">
+                            <input type="text" name="title" class="form-control" value="{$menu_info['title']}" id="field-1" placeholder="请输入菜单名称">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-2">执行路径 </label>
+
+                        <div class="col-sm-10">
+                            <input type="text" name="path" class="form-control" value="{$menu_info['path']}" id="" placeholder="请输入菜单路径，如：/menu/add">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">状态</label>
+
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="is_show"  value="1" <if condition="$menu_info['is_show'] eq 1">checked="checked"</if>>
+                                    显示
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="is_show"  value="0" <if condition="$menu_info['is_show'] eq 0">checked="checked"</if>>
+                                    隐藏
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">图标选择 <span style="color:red;">*</span></label>
+
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-star" <if condition="$menu_info['icon'] eq 'linecons-star' ">checked="checked"</if>>
+                                    <i class="linecons-star"></i>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-desktop" <if condition="$menu_info['icon'] eq 'linecons-desktop'">checked="checked"</if>>
+                                    <i class="linecons-desktop"></i>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-note" <if condition="$menu_info['icon'] eq 'linecons-note'">checked="checked"</if>>
+                                    <i class="linecons-note"></i>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-params" <if condition="$menu_info['icon'] eq 'linecons-params'">checked="checked"</if>>
+                                    <i class="linecons-params"></i>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-database" <if condition="$menu_info['icon'] eq 'linecons-database'">checked="checked"</if>>
+                                    <i class="linecons-database"></i>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-wallet" <if condition="$menu_info['icon'] eq 'linecons-wallet'">checked="checked"</if>>
+                                    <i class="linecons-wallet"></i>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-pencil" <if condition="$menu_info['icon'] eq 'linecons-pencil'">checked="checked"</if>>
+                                    <i class="linecons-pencil"></i>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-videocam" <if condition="$menu_info['icon'] eq 'linecons-videocam'">checked="checked"</if>>
+                                    <i class="linecons-videocam"></i>
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="icon" value="linecons-cog" <if condition="$menu_info['icon'] eq 'linecons-cog'">checked="checked"</if>>
+                                    <i class="linecons-cog"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-2">排序</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" name="sort" class="form-control" value="{$menu_info['sort']}" id="field-2" placeholder="输入正整数，越大越靠前">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group-separator"></div>
+                         <span style="float: right;">
+                           <a type="button" class="btn btn-black btn-sm" onclick="submit_addmenu()">提交</a>
+                        </span>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    function submit_addmenu(){
+
+        $.post('addDataInfo',$('#addmenu_form').serialize(),function(e){
+
+
+            show_loading_bar({
+                delay: .5,
+                pct: 100,
+                finish: function(){
+
+                   // Redirect after successful login page (when progress bar reaches 100%)
+                    if(e.state==1)
+                    {
+                        toastr.success(e.msg, "操作状态!");
+
+                        window.setTimeout('window.location="menuList?nav=19"',1500);
+                    }
+                    else
+                    {
+                        toastr.error(e.msg, "操作状态!");
+
+                    }
+               }
+           });
+
+        },'json');
+    }
+</script>
+
+<include file="Public:footer"/>

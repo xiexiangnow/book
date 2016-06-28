@@ -1,0 +1,70 @@
+<include file="Public:header" />
+<script language="JavaScript" charset="utf-8" type="text/javascript" src="__PLUGIN__/jquery-1.9.min.js"></script>
+<link rel='stylesheet' type='text/css' href='__PLUGIN__/ztree/css/zTreeStyle/zTreeStyle.css'>
+<script language="JavaScript" charset="utf-8" type="text/javascript" src="__PLUGIN__/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script language="JavaScript" charset="utf-8" type="text/javascript" src="__PLUGIN__/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript">
+<!--
+var setting = {
+	data: {
+		simpleData: {
+			enable: true
+		}
+	},
+	callback: {
+		beforeClick: beforeClick
+	}
+};
+
+var zNodes =[
+             <volist name="tree" id="vo" key="k">
+          	{id:{$vo.id}, pId:{$vo.pid}, name:"{$vo.title}", open:true}<?php echo empty($tree[$k])?'':','; ?>
+             </volist>
+          ];
+
+function beforeClick(treeId, treeNode) {
+	if (treeNode.isParent) {
+		return true;
+	} else {
+		<?php
+		   if($cat){
+	    ?>
+		parent.changeCat(treeNode.id,treeNode.name);
+		parent.layer.closeAll();
+		<?php
+		   }else{
+		?>
+		var url = "{:U('Doc/add')}";
+		parent.location.href=url+'?id='+treeNode.id;
+		return false;
+		<?php
+		   }
+		?>
+	}
+}
+
+$(document).ready(function(){
+	$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+});
+//-->
+</script>
+</head>
+<body>
+
+<div class="pad_lr_10" >
+    <table width="100%" cellspacing="0">
+        <tbody>
+			<tr>
+				<td>
+					<div class="content_wrap">
+						<div class="zTreeDemoBackground left">
+							<ul id="treeDemo" class="ztree"></ul>
+						</div>
+					</div>
+				</td>
+			</tr>
+        </tbody>
+    </table>
+</div>
+
+<include file="Public:footer" />

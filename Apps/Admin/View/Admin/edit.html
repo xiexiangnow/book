@@ -1,0 +1,92 @@
+<include file="Public:header" />
+<script language="JavaScript" type="text/javascript" src="__PLUGIN__/jquery-1.9.min.js"></script>
+<link type="text/css" rel="stylesheet" href="__PLUGIN__/formValidator/style/validator.css">
+<script language="JavaScript" type="text/javascript" src="__PLUGIN__/formValidator/formValidator-4.0.1.min.js"></script>
+<script language="JavaScript" type="text/javascript" src="__PLUGIN__/formValidator/formValidatorRegex.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+		
+        $.formValidator.initConfig({formID:"form1",autotip:true});       
+    	$("#username").formValidator({onShow:"请输入账号",onFocus:"数字、字母或下滑线 3-20位以内",onCorrect:"输入正确"}).regexValidator({regExp:"^\\w{3,20}$",onError:"格式不正确"}).ajaxValidator({
+    		dataType : "json",
+    		async : true,
+    		url : "{:U('Admin/checkAccount')}?act=ok",
+    		success : function(data){
+                if( data.status ) return true;                
+    			return false;
+    		},    		
+    		error: function(jqXHR, textStatus, errorThrown){alert("服务器没有返回数据，可能服务器忙，请重试"+errorThrown);},
+    		onError : "该用户名不可用，请更换用户名",
+    		onWait : "正在对用户名进行合法性校验，请稍候..."
+    	});
+    	<empty name="info">
+    	$("#password").formValidator({onShow:"请输入登录密码",onFocus:"数字、字母或下滑线 3-20位以内"}).regexValidator({regExp:"^\\w{3,20}$",onError:"格式不正确"});
+    	<else />
+	    $("#password").formValidator({empty:true,onShow:"留空则不修改密码",onFocus:"数字、字母或下滑线 3-20位以内"}).regexValidator({regExp:"^\\w{3,20}$",onError:"格式不正确"});
+	    </empty>
+	})
+</script>
+</head>
+
+<body>
+
+<div class="subnav">
+    <h1 class="title_2 line_x"><notempty name="info">修改<else />添加</notempty>管理员</h1>
+</div>
+
+<div class="pad_lr_10" >
+    <form id="form1" action="{:U('__ACTION__')}" method="post" >
+    <input type="hidden" name="id" value="{$info['id']}"/>
+    <table width="100%" cellspacing="0" class="table_form">
+        <tbody>
+			<tr>
+                <th width="150">账号：</th>                
+				<empty name="info">
+				<td>
+					<input name="account" id="username" type="text" class="input-text" size="30" value="">
+					<div id="usernameTip" style="width:300px"></div>					
+				</td> 
+				<else/>
+				<td>
+					<strong>{$info['account']}</strong>
+				</td>            	
+				</empty>                                   
+            </tr>
+			 <tr>
+				<th>密码：</th>
+				<td>
+                    <input name="password" id="password" type="text" class="input-text" size="30">                    
+                    <div id="passwordTip" style="width:300px"></div>	
+				</td>
+			</tr>
+            <tr class="api_mod">
+                <th>姓名：</th>
+                <td>
+                    <input name="realname" id="realname" type="text" value="{$info['realname']}" type="text" class="input-text" size="30">
+                    <div id="realnameTip" style="width:300px"></div>
+                </td>
+            </tr>
+
+			<tr class="tb_mod">
+                <th>权限组：</th>
+                <td>
+					<volist name="group" id="vo">
+					 <label><input type="checkbox" name="group[]" value="{$vo['id']}" <if condition="in_array($vo['id'],$roles)">checked</if>> {$vo['title']}</label>&nbsp;
+					</volist>
+				</td>
+            </tr>
+
+			<tr>
+				<th width="120">&nbsp;</th>
+                <td valign="bottom">
+					<input class="smt  mr10" type="submit" name="submit" value="<notempty name="info">修改<else />添加</notempty>" />&nbsp;&nbsp;
+					<a class="smt" href="{:U('admin/index')}">返回列表</a>
+				</td>
+			</tr>
+
+        </tbody>
+    </table>
+    </form>
+</div>
+
+<include file="Public:footer" />

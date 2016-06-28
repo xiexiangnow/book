@@ -1,0 +1,40 @@
+<include file="Public:header" />
+</head>
+<body>
+
+
+	<div class="pad_lr_10">
+		<div class="col_tab">
+
+			<div class="J_panes">
+				<div class="content_list pad_10">
+				<if condition="$res['cat'] eq 0">
+				  <img src="{$res['path']}">
+                <elseif condition="$res['cat'] eq 1"/>
+                  <a href="{$res['path']}">点击下载</a>
+                <else/>
+                <?php
+                  $path = $res['path'];
+                ?>
+                      <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+                      codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" height="276" width="497" style="z-index:9999999;">
+                      <param name="movie"
+                      value="__PLUGIN__/vcastr22.swf?vcastr_file=<?php echo $path?>">
+                      <param name="quality" value="high">
+                      <param name="allowFullScreen" value="true" />
+                      <embed src="__PLUGIN__/vcastr22.swf?vcastr_file=<?php echo $path?>"
+                      quality="high"
+                      pluginspage="http://www.macromedia.com/go/getflashplayer"
+                      type="application/x-shockwave-flash" width="497" height="276">
+                      </embed>
+                      </object>                    
+                </if>
+					
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+
+<include file="Public:footer" />
